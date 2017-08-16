@@ -4,42 +4,42 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "eBook")
+@Table(name = "e_book")
 public class EBook implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "eBook_id")
+    @Column(name = "e_book_id")
     private Long id;
 
-    @Column(name = "eBook_title", nullable = false)
+    @Column(name = "e_book_title", nullable = false)
     private String title;
 
-    @Column(name = "eBook_author")
+    @Column(name = "e_book_author")
     private String author;
 
-    @Column(name = "eBook_keywords")
+    @Column(name = "e_book_keywords")
     private String keywords;
 
-    @Column(name = "eBook_publicationYear")
+    @Column(name = "e_book_publication_year")
     private Integer publicationYear;
 
-    @Column(name = "eBook_filename", nullable = false)
+    @Column(name = "e_book_filename", nullable = false)
     private String filename;
 
-    @Column(name = "eBook_mime")
+    @Column(name = "e_book_mime")
     private String mime;
 
     @ManyToOne
-    @JoinColumn(name = "eBook_language", referencedColumnName = "language_id", nullable = false)
+    @JoinColumn(name = "e_book_language", referencedColumnName = "language_id", nullable = false)
     private Language language;
 
     @ManyToOne
-    @JoinColumn(name = "eBook_category", referencedColumnName = "category_id", nullable = false)
+    @JoinColumn(name = "e_book_category", referencedColumnName = "category_id", nullable = false)
     private Category category;
 
     @ManyToOne
-    @JoinColumn(name = "eBook_cataloguer", referencedColumnName = "user_id", nullable = false)
+    @JoinColumn(name = "e_book_cataloguer", referencedColumnName = "user_id", nullable = false)
     private User cataloguer;
 
     public EBook() {

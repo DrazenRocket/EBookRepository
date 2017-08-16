@@ -12,10 +12,10 @@ public class User implements Serializable {
     @Column(name = "user_id")
     private Long id;
 
-    @Column(name = "user_firstName", nullable = false)
+    @Column(name = "user_first_name", nullable = false)
     private String firstName;
 
-    @Column(name = "user_lastName", nullable = false)
+    @Column(name = "user_last_name", nullable = false)
     private String lastName;
 
     @Column(name = "user_username", nullable = false, unique = true)
