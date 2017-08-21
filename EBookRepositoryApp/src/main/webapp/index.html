@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>E-Book Repository</title>
+
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+        <link rel="icon" href="favicon.ico"/>
+
+        <link rel="stylesheet" href="assets/bower_components/bootstrap/dist/css/bootstrap.min.css"/>
+
+        <script src="assets/bower_components/jquery/dist/jquery.min.js"></script>
+        <script src="assets/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+        <script src="assets/bower_components/angular/angular.min.js"></script>
+        <script src="assets/bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
+        <script src="assets/bower_components/angular-local-storage/dist/angular-local-storage.min.js"></script>
+
+        <script src="app/app.module.js"></script>
+        <script src="app/app.route.js"></script>
+    </head>
+
+    <body ng-app="app">
+        <div class="container">
+            <div class="row" ui-view="headerView"></div>
+            <div class="row" ui-view="mainView"></div>
+            <div class="row" ui-view="footerView"></div>
+        </div>
+    </body>
+</html>
