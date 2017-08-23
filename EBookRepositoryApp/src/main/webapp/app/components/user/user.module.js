@@ -2,5 +2,5 @@
     "use strict";
 
     angular
-        .module("app", ["ui.router", "app.user"]);
+        .module("app.user", ["ui.router", "LocalStorageModule"]);
 } (angular));
