@@ -81,4 +81,16 @@
         this.deleteJwtFromLocalStorage();
         this.deleteUserIdFromLocalStorage();
     };
+
+    UserService.prototype.isLoggedIn = function () {
+        var loggedIn = false;
+        var userId = this.getUserIdFromLocalStorage();
+        var jwt = this.getJwtFromLocalStorage();
+
+        if (userId && jwt) {
+            loggedIn = true;
+        }
+
+        return loggedIn;
+    };
 } (angular));

@@ -21,6 +21,11 @@
             .state("user-profile", {
                 url: "/user-profile/:userId",
                 views: {
+                    headerView: {
+                        templateUrl: "app/components/core/core-header/core-header.html",
+                        controller: "CoreHeaderController",
+                        controllerAs: "coreHeaderViewModel"
+                    },
                     mainView: {
                         templateUrl: "app/components/user/user-profile/user-profile.html",
                         controller: "UserProfileController",

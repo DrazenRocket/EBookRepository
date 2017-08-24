@@ -9,6 +9,7 @@
         <link rel="icon" href="favicon.ico"/>
 
         <link rel="stylesheet" href="assets/bower_components/bootstrap/dist/css/bootstrap.min.css"/>
+        <link rel="stylesheet" href="assets/css/app.css"/>
 
         <script src="assets/bower_components/jquery/dist/jquery.min.js"></script>
         <script src="assets/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
@@ -21,6 +22,8 @@
         <script src="app/components/user/user.service.js"></script>
         <script src="app/components/user/user-login/user-login.controller.js"></script>
         <script src="app/components/user/user-profile/user-profile.controller.js"></script>
+        <script src="app/components/core/core.module.js"></script>
+        <script src="app/components/core/core-header/core-header.controller.js"></script>
         <script src="app/app.module.js"></script>
         <script src="app/app.route.js"></script>
     </head>
@@ -28,7 +31,7 @@
     <body ng-app="app">
         <div class="container">
             <div class="row" ui-view="headerView"></div>
-            <div class="row" ui-view="mainView"></div>
+            <div class="row" ui-view="mainView" style="margin-top: 10px"></div>
             <div class="row" ui-view="footerView"></div>
         </div>
     </body>
