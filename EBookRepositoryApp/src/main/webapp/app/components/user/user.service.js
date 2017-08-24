@@ -24,6 +24,15 @@
         return this.$http(request);
     };
 
+    UserService.prototype.getUserById = function (userId) {
+        var request = {
+            method: "GET",
+            url: "/api/users/" + userId
+        };
+
+        return this.$http(request);
+    };
+
     UserService.prototype.getUserIdFromLocalStorage = function () {
         return this.localStorageService.get("user.id");
     };

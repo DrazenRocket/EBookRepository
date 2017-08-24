@@ -17,6 +17,16 @@
                         controllerAs: "userLoginViewModel"
                     }
                 }
+            })
+            .state("user-profile", {
+                url: "/user-profile/:userId",
+                views: {
+                    mainView: {
+                        templateUrl: "app/components/user/user-profile/user-profile.html",
+                        controller: "UserProfileController",
+                        controllerAs: "userProfileViewModel"
+                    }
+                }
             });
     }
 } (angular));

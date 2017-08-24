@@ -5,8 +5,8 @@
         .module("app.user")
         .controller("UserLoginController", UserLoginController);
 
-    UserLoginController.$inject = ["userService"];
-    function UserLoginController(userService) {
+    UserLoginController.$inject = ["userService", "$state"];
+    function UserLoginController(userService, $state) {
         var viewModel = this;
 
         viewModel.username = "";
@@ -19,9 +19,11 @@
                 userService.login(viewModel.username,
                     viewModel.password,
                     function (response) {
-                        // TODO: Redirect
-                        viewModel.unsuccessfulLogin = false;
-                        console.log(response.data);
+                        // TODO: Redirect to appropriate state (for example: to default which shows categories)
+                        var userId = userService.getUserIdFromLocalStorage();
+                        $state.go("user-profile", {
+                            userId: userId
+                        });
                     },
                     function () {
                         viewModel.unsuccessfulLogin = true;
