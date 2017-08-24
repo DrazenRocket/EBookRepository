@@ -11,18 +11,29 @@
         this.localStorageService = localStorageService;
     }
 
-    UserService.prototype.getJwt = function (username, password, successCallback, errorCallback) {
+    UserService.prototype.getJwt = function (username, password) {
         var request = {
             method: "GET",
             url: "/api/authentications/jwt",
             headers: {
-                "Accept": "text/plain",
                 "X-Auth-Username": username,
                 "X-Auth-Password": password
             }
         };
 
-        this.$http(request).then(successCallback, errorCallback);
+        return this.$http(request);
+    };
+
+    UserService.prototype.getUserIdFromLocalStorage = function () {
+        return this.localStorageService.get("user.id");
+    };
+
+    UserService.prototype.saveUserIdToLocalStorage = function (userId) {
+        this.localStorageService.add("user.id", userId);
+    };
+
+    UserService.prototype.deleteUserIdFromLocalStorage = function () {
+        this.localStorageService.remove("user.id");
     };
 
     UserService.prototype.getJwtFromLocalStorage = function () {
@@ -33,30 +44,32 @@
         this.localStorageService.add("user.jwt", jwt);
     };
 
-    UserService.prototype.removeJwtFromLocalStorage = function () {
+    UserService.prototype.deleteJwtFromLocalStorage = function () {
         this.localStorageService.remove("user.jwt");
     };
 
     UserService.prototype.login = function (username, password, successCallback, errorCallback) {
         var thisUserService = this;
 
-        thisUserService.getJwt(username,
-            password,
-            function (response) {
+        thisUserService
+            .getJwt(username, password)
+            .then(function (response) {
                 if (response.status == 200) {
-                    var jwt = response.data;
+                    var data = response.data;
+                    var jwt = data.token;
+                    var userId = data.userId;
 
                     thisUserService.saveJwtToLocalStorage(jwt);
-                    thisUserService.$http.defaults.headers.common["X-Auth-Jwt"] = jwt;
+                    thisUserService.saveUserIdToLocalStorage(userId);
                     successCallback(response);
                 }
-            },
-            function (response) {
-                errorCallback(response);
+            }, function (response) {
+                errorCallback();
             });
     };
 
     UserService.prototype.logout = function () {
-        this.removeJwtFromLocalStorage();
+        this.deleteJwtFromLocalStorage();
+        this.deleteUserIdFromLocalStorage();
     };
 } (angular));

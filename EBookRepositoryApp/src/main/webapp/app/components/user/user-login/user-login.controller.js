@@ -18,9 +18,10 @@
             if (isValid) {
                 userService.login(viewModel.username,
                     viewModel.password,
-                    function () {
+                    function (response) {
                         // TODO: Redirect
-                        console.log("success");
+                        viewModel.unsuccessfulLogin = false;
+                        console.log(response.data);
                     },
                     function () {
                         viewModel.unsuccessfulLogin = true;

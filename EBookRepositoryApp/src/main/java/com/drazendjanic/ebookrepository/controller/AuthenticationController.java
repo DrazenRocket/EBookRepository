@@ -1,5 +1,6 @@
 package com.drazendjanic.ebookrepository.controller;
 
+import com.drazendjanic.ebookrepository.dto.JwtDto;
 import com.drazendjanic.ebookrepository.util.JwtUtil;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,15 +16,16 @@ public class AuthenticationController {
 
     @GetMapping("/jwt")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<String> getJwt(@AuthenticationPrincipal Long userId) {
-        ResponseEntity<String> responseEntity = null;
-        String jwt = JwtUtil.generateJwt(userId);
+    public ResponseEntity<JwtDto> getJwt(@AuthenticationPrincipal Long authenticatedUserId) {
+        ResponseEntity<JwtDto> responseEntity = null;
+        String jwt = JwtUtil.generateJwt(authenticatedUserId);
+        JwtDto jwtDto = new JwtDto(authenticatedUserId, jwt);
 
         if (jwt != null) {
-            responseEntity = new ResponseEntity<String>(jwt, HttpStatus.OK);
+            responseEntity = new ResponseEntity<JwtDto>(jwtDto, HttpStatus.OK);
         }
         else {
-            responseEntity = new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
+            responseEntity = new ResponseEntity<JwtDto>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
         return responseEntity;
