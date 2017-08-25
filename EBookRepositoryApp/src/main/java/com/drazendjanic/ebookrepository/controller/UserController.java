@@ -10,12 +10,25 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
 
     @Autowired
     private IUserService userService;
+
+    @GetMapping("")
+    public ResponseEntity<List<User>> getAllUsers() {
+        ResponseEntity<List<User>> responseEntity = null;
+        List<User> users = userService.findUsers();
+
+        users.forEach(user -> user.setPassword(null));
+        responseEntity = new ResponseEntity<List<User>>(users, HttpStatus.OK);
+
+        return responseEntity;
+    }
 
     @GetMapping("/{userId}")
     public ResponseEntity<User> getUserById(@PathVariable Long userId) {

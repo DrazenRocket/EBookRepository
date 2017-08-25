@@ -33,6 +33,15 @@
         return this.$http(request);
     };
 
+    UserService.prototype.getAllUsers = function () {
+        var request = {
+            method: "GET",
+            url: "/api/users"
+        };
+
+        return this.$http(request);
+    };
+
     UserService.prototype.getUserIdFromLocalStorage = function () {
         return this.localStorageService.get("user.id");
     };

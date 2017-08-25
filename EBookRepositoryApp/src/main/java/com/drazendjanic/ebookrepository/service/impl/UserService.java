@@ -6,6 +6,8 @@ import com.drazendjanic.ebookrepository.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UserService implements IUserService {
 
@@ -24,6 +26,13 @@ public class UserService implements IUserService {
         User user =  userRepository.findByUsername(username);
 
         return user;
+    }
+
+    @Override
+    public List<User> findUsers() {
+        List<User> users = userRepository.findAll();
+
+        return users;
     }
 
 }

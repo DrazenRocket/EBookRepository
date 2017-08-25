@@ -21,7 +21,7 @@
                     <a href="#">Categories</a>
                 </li>
                 <li ng-if="coreHeaderViewModel.loggedIn == true && coreHeaderViewModel.userDetails.type == 'ROLE_ADMIN'">
-                    <a href="#">Users</a>
+                    <a ui-sref="user-list">Users</a>
                 </li>
             </ul>
 

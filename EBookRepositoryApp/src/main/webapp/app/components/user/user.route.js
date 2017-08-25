@@ -32,6 +32,21 @@
                         controllerAs: "userProfileViewModel"
                     }
                 }
+            })
+            .state("user-list", {
+                url: "/user-list",
+                views: {
+                    headerView: {
+                        templateUrl: "app/components/core/core-header/core-header.html",
+                        controller: "CoreHeaderController",
+                        controllerAs: "coreHeaderViewModel"
+                    },
+                    mainView: {
+                        templateUrl: "app/components/user/user-list/user-list.html",
+                        controller: "UserListController",
+                        controllerAs: "userListViewModel"
+                    }
+                }
             });
     }
 } (angular));
