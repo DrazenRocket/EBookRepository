@@ -76,15 +76,18 @@
             <div ng-if="userProfileViewModel.userDetails.type == 'ROLE_SUBSCRIBER'"
                 class="panel panel-info">
                 <div class="panel-heading">
-                    Subscribed for category
+                    Details of subscribe
                 </div>
 
                 <div class="panel-body">
                     <span ng-if="!userProfileViewModel.userDetails.category">
-                        For all categories
+                        Subscribed for all categories
                     </span>
                     <span ng-if="userProfileViewModel.userDetails.category">
-                        {{userProfileViewModel.userDetails.category.id}}) {{userProfileViewModel.userDetails.category.name}}
+                        Subscribed only for category
+                        <span class="label label-info">
+                            {{userProfileViewModel.userDetails.category.id}}) {{userProfileViewModel.userDetails.category.name}}
+                        <span>
                     </span>
                 </div>
             </div>
