@@ -15,8 +15,6 @@
         viewModel.userId = $stateParams.userId;
         viewModel.userDetails = {};
         viewModel.isOfLoggedInUser = false;
-        viewModel.updateProfile = updateProfile;
-        viewModel.changePassword = changePassword;
 
         if (viewModel.loggedIn) {
             viewModel.loggedInUserId = userService.getUserIdFromLocalStorage();
@@ -37,13 +35,5 @@
                     viewModel.userDetails = response.data;
                 }
             });
-
-        function updateProfile() {
-            $window.alert("Not yet implemented");
-        }
-
-        function changePassword() {
-            $window.alert("Not yet implemented");
-        }
     }
 } (angular));

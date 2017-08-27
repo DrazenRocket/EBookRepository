@@ -47,6 +47,21 @@
                         controllerAs: "userListViewModel"
                     }
                 }
+            })
+            .state("user-edit-password", {
+                url: "/user-edit-password/:userId",
+                views: {
+                    headerView: {
+                        templateUrl: "app/components/core/core-header/core-header.html",
+                        controller: "CoreHeaderController",
+                        controllerAs: "coreHeaderViewModel"
+                    },
+                    mainView: {
+                        templateUrl: "app/components/user/user-edit/user-edit-password/user-edit-password.html",
+                        controller: "UserEditPasswordController",
+                        controllerAs: "userEditPasswordViewModel"
+                    }
+                }
             });
     }
 } (angular));

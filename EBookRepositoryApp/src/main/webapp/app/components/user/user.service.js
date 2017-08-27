@@ -42,6 +42,23 @@
         return this.$http(request);
     };
 
+    UserService.prototype.changePassword = function (userId, oldPassword, newPassword) {
+        var jwt = this.getJwtFromLocalStorage();
+        var request = {
+            method: "PUT",
+            url: "/api/users/" + userId + "/password",
+            headers: {
+                "X-Auth-Jwt": jwt
+            },
+            data: {
+                oldPassword: oldPassword,
+                newPassword: newPassword
+            }
+        };
+
+        return this.$http(request);
+    };
+
     UserService.prototype.getUserIdFromLocalStorage = function () {
         return this.localStorageService.get("user.id");
     };
@@ -74,7 +91,7 @@
             .then(function (response) {
                 if (response.status == 200) {
                     var data = response.data;
-                    var jwt = data.token;
+                    var jwt = data.jwt;
                     var userId = data.userId;
 
                     thisUserService.saveJwtToLocalStorage(jwt);

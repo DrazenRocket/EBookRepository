@@ -1,14 +1,17 @@
 package com.drazendjanic.ebookrepository.controller;
 
+import com.drazendjanic.ebookrepository.dto.ChangePasswordDto;
 import com.drazendjanic.ebookrepository.entity.User;
+import com.drazendjanic.ebookrepository.exception.InvalidPasswordException;
+import com.drazendjanic.ebookrepository.exception.NotFoundException;
 import com.drazendjanic.ebookrepository.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -20,7 +23,7 @@ public class UserController {
     private IUserService userService;
 
     @GetMapping("")
-    public ResponseEntity<List<User>> getAllUsers() {
+    public ResponseEntity<List<User>> findAllUsers() {
         ResponseEntity<List<User>> responseEntity = null;
         List<User> users = userService.findUsers();
 
@@ -31,7 +34,7 @@ public class UserController {
     }
 
     @GetMapping("/{userId}")
-    public ResponseEntity<User> getUserById(@PathVariable Long userId) {
+    public ResponseEntity<User> findOneUserById(@PathVariable Long userId) {
         ResponseEntity<User> responseEntity = null;
         User user = userService.findUserById(userId);
 
@@ -41,6 +44,32 @@ public class UserController {
         }
         else {
             responseEntity = new ResponseEntity<User>(HttpStatus.NOT_FOUND);
+        }
+
+        return responseEntity;
+    }
+
+    @PutMapping("/{userId}/password")
+    @PreAuthorize("isAuthenticated() && (#authenticatedUserId == #userId || hasRole('ROLE_ADMIN'))")
+    public ResponseEntity<User> changePassword(@AuthenticationPrincipal Long authenticatedUserId,
+                                               @PathVariable Long userId,
+                                               @Validated @RequestBody ChangePasswordDto changePasswordDto) {
+        ResponseEntity<User> responseEntity = null;
+        String oldPassword = changePasswordDto.getOldPassword();
+        String newPassword = changePasswordDto.getNewPassword();
+
+        try {
+            userService.changePassword(userId, oldPassword, newPassword);
+            responseEntity = new ResponseEntity<User>(HttpStatus.NO_CONTENT);
+        }
+        catch (NotFoundException e) {
+            responseEntity = new ResponseEntity<User>(HttpStatus.NOT_FOUND);
+        }
+        catch (InvalidPasswordException e1) {
+            responseEntity = new ResponseEntity<User>(HttpStatus.BAD_REQUEST);
+        }
+        catch (Exception e2) {
+            responseEntity = new ResponseEntity<User>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
         return responseEntity;

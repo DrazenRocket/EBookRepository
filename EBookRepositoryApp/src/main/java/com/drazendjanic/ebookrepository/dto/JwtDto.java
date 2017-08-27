@@ -4,15 +4,15 @@ public class JwtDto {
 
     private Long userId;
 
-    private String token;
+    private String jwt;
 
     public JwtDto() {
 
     }
 
-    public JwtDto(Long userId, String token) {
+    public JwtDto(Long userId, String jwt) {
         this.userId = userId;
-        this.token = token;
+        this.jwt = jwt;
     }
 
     public Long getUserId() {
@@ -23,12 +23,12 @@ public class JwtDto {
         this.userId = userId;
     }
 
-    public String getToken() {
-        return token;
+    public String getJwt() {
+        return jwt;
     }
 
-    public void setToken(String token) {
-        this.token = token;
+    public void setJwt(String jwt) {
+        this.jwt = jwt;
     }
 
 }
