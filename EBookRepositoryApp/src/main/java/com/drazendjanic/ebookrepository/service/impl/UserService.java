@@ -35,7 +35,7 @@ public class UserService implements IUserService {
 
     @Override
     @Transactional
-    public List<User> findUsers() {
+    public List<User> findAllUsers() {
         List<User> users = userRepository.findAll();
 
         return users;

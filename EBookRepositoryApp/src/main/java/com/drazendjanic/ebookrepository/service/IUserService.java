@@ -12,7 +12,7 @@ public interface IUserService {
 
     User findUserByUsername(String username);
 
-    List<User> findUsers();
+    List<User> findAllUsers();
 
     void changePassword(Long userId, String oldPassword, String newPassword) throws NotFoundException, InvalidPasswordException;
 

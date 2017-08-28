@@ -18,7 +18,7 @@
                     <a href="#">E-Books</a>
                 </li>
                 <li>
-                    <a href="#">Categories</a>
+                    <a ui-sref="category-list">Categories</a>
                 </li>
                 <li ng-if="coreHeaderViewModel.loggedIn == true && coreHeaderViewModel.userDetails.type == 'ROLE_ADMIN'">
                     <a ui-sref="user-list">Users</a>

@@ -25,7 +25,7 @@ public class UserController {
     @GetMapping("")
     public ResponseEntity<List<User>> findAllUsers() {
         ResponseEntity<List<User>> responseEntity = null;
-        List<User> users = userService.findUsers();
+        List<User> users = userService.findAllUsers();
 
         users.forEach(user -> user.setPassword(null));
         responseEntity = new ResponseEntity<List<User>>(users, HttpStatus.OK);
