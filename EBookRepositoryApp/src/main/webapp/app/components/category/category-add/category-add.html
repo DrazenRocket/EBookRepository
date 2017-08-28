@@ -1,0 +1,22 @@
+<div class="row col-sm-offset-3 col-sm-6">
+    <div class="page-header">
+        <h1>Add a new category</h1>
+    </div>
+
+    <form name="categoryAddForm" ng-submit="categoryAddViewModel.addCategory(categoryAddForm.$valid)" novalidate>
+        <div class="form-group"
+            ng-class="{'has-error': categoryAddForm.name.$invalid && !categoryAddForm.name.$pristine}">
+            <label for="name">Name</label>
+            <input name="name" id="name" ng-model="categoryAddViewModel.newCategory.name"
+                type="text" class="form-control" required/>
+            <p ng-show="categoryAddForm.name.$invalid && !categoryAddForm.name.$pristine" class="help-block">
+                Name is required
+            </p>
+        </div>
+
+        <button type="submit" class="btn btn-success btn-block"
+            ng-disabled="categoryAddForm.$invalid">
+            <span class="glyphicon glyphicon-ok"></span> Add
+        </button>
+    </form>
+</div>

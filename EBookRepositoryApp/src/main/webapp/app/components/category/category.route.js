@@ -22,6 +22,21 @@
                         controllerAs: "categoryListViewModel"
                     }
                 }
+            })
+            .state("category-add", {
+                url: "/category-add",
+                views: {
+                    headerView: {
+                        templateUrl: "app/components/core/core-header/core-header.html",
+                        controller: "CoreHeaderController",
+                        controllerAs: "coreHeaderViewModel"
+                    },
+                    mainView: {
+                        templateUrl: "app/components/category/category-add/category-add.html",
+                        controller: "CategoryAddController",
+                        controllerAs: "categoryAddViewModel"
+                    }
+                }
             });
     }
 } (angular));

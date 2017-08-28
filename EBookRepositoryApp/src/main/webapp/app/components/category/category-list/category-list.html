@@ -3,6 +3,11 @@
         <h1>List of categories <span class="badge">{{categoryListViewModel.categoryList.length}}</span></h1>
     </div>
 
+    <div class="btn-group btn-group-justified">
+        <a ng-if="categoryListViewModel.loggedIn && (categoryListViewModel.loggedInUserDetails.type == 'ROLE_ADMIN')"
+            ui-sref="category-add" class="btn btn-primary">Add a new category</a>
+    </div>
+
     <div class="table-responsive">
         <table class="table table-striped table-bordered table-hover">
             <thead>

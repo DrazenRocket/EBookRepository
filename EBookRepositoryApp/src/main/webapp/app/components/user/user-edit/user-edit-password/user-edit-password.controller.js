@@ -41,6 +41,7 @@
                     .changePassword(viewModel.userId, viewModel.oldPassword, viewModel.newPassword)
                     .then(function (response) {
                         if (response.status == 200 || response.status == 204) {
+                            $window.alert("Password is changed.");
                             $state.go("user-profile", {userId: viewModel.userId});
                         }
                     }, function (response) {

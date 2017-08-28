@@ -51,25 +51,25 @@ public class UserController {
 
     @PutMapping("/{userId}/password")
     @PreAuthorize("isAuthenticated() && (#authenticatedUserId == #userId || hasRole('ROLE_ADMIN'))")
-    public ResponseEntity<User> changePassword(@AuthenticationPrincipal Long authenticatedUserId,
+    public ResponseEntity<Void> changePassword(@AuthenticationPrincipal Long authenticatedUserId,
                                                @PathVariable Long userId,
                                                @Validated @RequestBody ChangePasswordDto changePasswordDto) {
-        ResponseEntity<User> responseEntity = null;
+        ResponseEntity<Void> responseEntity = null;
         String oldPassword = changePasswordDto.getOldPassword();
         String newPassword = changePasswordDto.getNewPassword();
 
         try {
             userService.changePassword(userId, oldPassword, newPassword);
-            responseEntity = new ResponseEntity<User>(HttpStatus.NO_CONTENT);
+            responseEntity = new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
         }
         catch (NotFoundException e) {
-            responseEntity = new ResponseEntity<User>(HttpStatus.NOT_FOUND);
+            responseEntity = new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
         }
         catch (InvalidPasswordException e1) {
-            responseEntity = new ResponseEntity<User>(HttpStatus.BAD_REQUEST);
+            responseEntity = new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
         }
         catch (Exception e2) {
-            responseEntity = new ResponseEntity<User>(HttpStatus.INTERNAL_SERVER_ERROR);
+            responseEntity = new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
         return responseEntity;
