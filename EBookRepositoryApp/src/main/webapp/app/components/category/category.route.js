@@ -52,6 +52,21 @@
                         controllerAs: "categoryAddViewModel"
                     }
                 }
+            })
+            .state("category-edit", {
+                url: "/category-edit/:categoryId",
+                views: {
+                    headerView: {
+                        templateUrl: "app/components/core/core-header/core-header.html",
+                        controller: "CoreHeaderController",
+                        controllerAs: "coreHeaderViewModel"
+                    },
+                    mainView: {
+                        templateUrl: "app/components/category/category-edit/category-edit.html",
+                        controller: "CategoryEditController",
+                        controllerAs: "categoryEditViewModel"
+                    }
+                }
             });
     }
 } (angular));

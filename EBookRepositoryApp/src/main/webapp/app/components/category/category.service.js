@@ -44,4 +44,20 @@
 
         return this.$http(request);
     };
+
+    CategoryService.prototype.editCategory = function (id, name) {
+        var thisCategoryService = this;
+        var request = {
+            method: "PUT",
+            url: "/api/categories/" + id,
+            headers: {
+                "X-Auth-Jwt": thisCategoryService.userService.getJwtFromLocalStorage()
+            },
+            data: {
+                name: name
+            }
+        };
+
+        return this.$http(request);
+    };
 } (angular));
