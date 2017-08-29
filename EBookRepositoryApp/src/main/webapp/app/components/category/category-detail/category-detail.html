@@ -1,0 +1,73 @@
+<div class="row col-sm-offset-3 col-sm-6">
+    <div class="page-header">
+        <h1>Details of the category</h1>
+    </div>
+
+    <h2>
+        Basic info about category
+    </h2>
+
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            Id
+        </div>
+
+        <div class="panel-body">
+            {{categoryDetailViewModel.categoryId}}
+        </div>
+    </div>
+
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            Name
+        </div>
+
+        <div class="panel-body">
+            {{categoryDetailViewModel.categoryDetails.name}}
+        </div>
+    </div>
+
+    <div ng-if="categoryDetailViewModel.loggedIn && (categoryDetailViewModel.loggedInUserDetails.type == 'ROLE_ADMIN')"
+        class="panel panel-warning">
+        <div class="panel-heading">
+            Available actions
+        </div>
+
+        <div class="panel-body">
+            <a href="#" class="btn btn-warning btn-block">Edit</a>
+        </div>
+    </div>
+
+    <h2>Books from this category <span class="badge"></span></h2>
+
+    <div ng-if="categoryDetailViewModel.availableContent"
+        class="alert alert-success">
+        Books from this category are available you to download them.
+    </div>
+
+    <div ng-if="!categoryDetailViewModel.availableContent"
+            class="alert alert-danger">
+        You are not subscribed for this category and you can't download any book from this category.
+    </div>
+
+    <table class="table table-striped table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Language</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr ng-repeat="eBook in categoryDetailViewModel.eBookList"
+                ng-class="{'success': categoryDetailViewModel.availableContent}">
+                <td>{{eBook.id}}</td>
+                <td>{{eBook.title}}</td>
+                <td>{{eBook.author}}</td>
+                <td>{{eBook.language.id}}) {{eBook.language.name}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

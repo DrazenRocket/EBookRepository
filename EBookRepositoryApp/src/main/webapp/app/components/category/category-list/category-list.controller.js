@@ -35,7 +35,7 @@
             });
 
         function showCategoryDetails(categoryId) {
-
+            $state.go("category-detail", {categoryId: categoryId});
         }
     }
 } (angular));

@@ -17,6 +17,14 @@ public class CategoryService implements ICategoryService {
 
     @Override
     @Transactional
+    public Category findCategoryById(Long id) {
+        Category category = categoryRepository.findOne(id);
+
+        return category;
+    }
+
+    @Override
+    @Transactional
     public List<Category> findAllCategories() {
         List<Category> categories = categoryRepository.findAll();
 

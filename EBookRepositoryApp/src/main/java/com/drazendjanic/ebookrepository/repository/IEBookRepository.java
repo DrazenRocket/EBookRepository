@@ -4,7 +4,11 @@ import com.drazendjanic.ebookrepository.entity.EBook;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface IEBookRepository extends CrudRepository<EBook, Long> {
+
+    List<EBook> findByCategoryId(Long id);
 
 }

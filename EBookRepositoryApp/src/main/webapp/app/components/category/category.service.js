@@ -11,6 +11,15 @@
         this.$http = $http;
     }
 
+    CategoryService.prototype.getCategoryById = function (categoryId) {
+        var request = {
+            method: "GET",
+            url: "/api/categories/" + categoryId
+        };
+
+        return this.$http(request);
+    };
+
     CategoryService.prototype.getAllCategories = function () {
         var request = {
             method: "GET",
