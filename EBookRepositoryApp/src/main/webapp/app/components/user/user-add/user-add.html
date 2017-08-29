@@ -1,0 +1,102 @@
+<div class="row col-sm-offset-3 col-sm-6">
+    <div class="page-header">
+        <h1>Add a new user</h1>
+    </div>
+
+    <form name="userAddForm" ng-submit="userAddViewModel.addUser(userAddForm.$valid)" novalidate>
+        <div class="form-group"
+             ng-class="{'has-error': userAddForm.firstName.$invalid &&!userAddForm.firstName.$pristine}">
+            <label for="firstName">*First name</label>
+            <input name="firstName" id="firstName" ng-model="userAddViewModel.newUser.firstName"
+                type="text" class="form-control" required/>
+            <p ng-show="userAddForm.firstName.$invalid && !userAddForm.firstName.$pristine"
+                class="help-block">
+                First name is required.
+            </p>
+        </div>
+
+        <div class="form-group"
+            ng-class="{'has-error': userAddForm.lastName.$invalid && !userAddForm.lastName.$pristine}">
+            <label for="lastName">*Last name</label>
+            <input name="lastName" id="lastName" ng-model="userAddViewModel.newUser.lastName"
+                type="text" class="form-control" required/>
+            <p ng-show="userAddForm.lastName.$invalid && !userAddForm.lastName.$pristine"
+                class="help-block">
+                Last name is required.
+            </p>
+        </div>
+
+        <div class="form-group"
+            ng-class="{'has-error': userAddForm.username.$invalid && !userAddForm.username.$pristine}">
+            <label for="username">*Username</label>
+            <input name="username" id="username" ng-model="userAddViewModel.newUser.username"
+                type="text" class="form-control" required/>
+            <p ng-show="userAddForm.username.$invalid && !userAddForm.username.$pristine"
+                class="help-block">
+                User name is required.
+            </p>
+        </div>
+
+        <div class="form-group"
+            ng-class="{'has-error': userAddForm.password.$invalid && !userAddForm.password.$pristine}">
+            <label for="password">*Password</label>
+            <input name="password" id="password" ng-model="userAddViewModel.newUser.password"
+                type="password" class="form-control" required/>
+            <p ng-show="userAddForm.password.$invalid && !userAddForm.password.$pristine"
+                class="help-block">
+                Password is required.
+            </p>
+        </div>
+
+        <div class="form-group"
+            ng-class="{'has-error': (userAddForm.reTypedPassword.$invalid && !userAddForm.reTypedPassword.$pristine) ||
+            (userAddViewModel.newUser.password != userAddViewModel.newUser.reTypedPassword && !userAddForm.password.$pristine && !userAddForm.reTypedPassword.$pristine)}">
+            <label for="reTypedPassword">*Re-typed password</label>
+            <input name="reTypedPassword" id="reTypedPassword" ng-model="userAddViewModel.newUser.reTypedPassword"
+                type="password" class="form-control" required/>
+            <p ng-show="(userAddForm.reTypedPassword.$invalid && !userAddForm.reTypedPassword.$pristine) ||
+                (userAddViewModel.newUser.password != userAddViewModel.newUser.reTypedPassword && !userAddForm.password.$pristine && !userAddForm.reTypedPassword.$pristine)"
+                class="help-block">
+                Re-typed password is required and must be same as password in the upper field.
+            </p>
+        </div>
+
+        <div class="form-group"
+            ng-class="{'has-error': userAddForm.type.$invalid && !userAddForm.type.$pristine}">
+            <label for="type">*Type</label>
+            <select name="type" id="type" ng-model="userAddViewModel.newUser.type"
+                class="form-control" required>
+                <option value="ROLE_ADMIN">Administrator</option>
+                <option value="ROLE_SUBSCRIBER">Subscriber</option>
+            </select>
+            <p ng-show="userAddForm.type.$invalid && !userAddForm.type.$pristine"
+                class="help-block">
+                Type is required.
+            </p>
+        </div>
+
+        <div ng-if="userAddViewModel.newUser.type == 'ROLE_SUBSCRIBER'"
+            class="form-group" ng-class="{'has-error': userAddForm.category.$invalid && !userAddForm.category.$pristine}">
+            <label for="category">*Category</label>
+            <select name="category" id="category" ng-model="userAddViewModel.newUser.categoryId"
+                class="form-control" required>
+                <option value="null">--SUBSCRIBED FOR ALL CATEGORIES--</option>
+                <option value="{{category.id}}" ng-repeat="category in userAddViewModel.categoryList">
+                    {{category.id}}) {{category.name}}
+                </option>
+            </select>
+            <p ng-show="userAddForm.category.$invalid && !userAddForm.category.$pristine">
+                Category is required
+            </p>
+        </div>
+
+        <p ng-show="userAddViewModel.usedUsername" class="alert alert-danger">
+            Username is already used. Try another...
+        </p>
+
+        <button type="submit" class="btn btn-success btn-block"
+            ng-disabled="!(userAddForm.$valid && (userAddViewModel.newUser.password == userAddViewModel.newUser.reTypedPassword))">
+            <span class="glyphicon glyphicon-ok"></span> Add
+        </button>
+    </form>
+</div>

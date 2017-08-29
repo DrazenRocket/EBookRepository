@@ -7,7 +7,7 @@
     <form name="userLoginForm" ng-submit="userLoginViewModel.login(userLoginForm.$valid)" novalidate>
         <div class="from-group"
             ng-class="{'has-error': userLoginForm.username.$invalid && !userLoginForm.username.$pristine}">
-            <label for="username">Username</label>
+            <label for="username">*Username</label>
             <input name="username" id="username" ng-model="userLoginViewModel.username"
                 type="text" class="form-control" required/>
             <p ng-show="userLoginForm.username.$invalid && !userLoginForm.username.$pristine" class="help-block">
@@ -17,7 +17,7 @@
 
         <div class="form-group"
             ng-class="{'has-error': userLoginForm.password.$invalid && !userLoginForm.password.$pristine}">
-            <label for="password">Password</label>
+            <label for="password">*Password</label>
             <input name="password" id="password" ng-model="userLoginViewModel.password"
                 type="password" class="form-control" required/>
             <p ng-show="userLoginForm.password.$invalid && !userLoginForm.password.$pristine" class="help-block">

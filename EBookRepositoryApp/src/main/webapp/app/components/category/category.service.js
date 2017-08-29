@@ -30,12 +30,12 @@
     };
 
     CategoryService.prototype.addCategory = function (name) {
-        var thisCategoryService = this;
+        var jwt = this.getJwtFromLocalStorage();
         var request = {
             method: "POST",
             url: "/api/categories",
             headers: {
-                "X-Auth-Jwt": thisCategoryService.userService.getJwtFromLocalStorage()
+                "X-Auth-Jwt": jwt
             },
             data: {
                 name: name
@@ -46,12 +46,12 @@
     };
 
     CategoryService.prototype.editCategory = function (id, name) {
-        var thisCategoryService = this;
+        var jwt = this.getJwtFromLocalStorage();
         var request = {
             method: "PUT",
             url: "/api/categories/" + id,
             headers: {
-                "X-Auth-Jwt": thisCategoryService.userService.getJwtFromLocalStorage()
+                "X-Auth-Jwt": jwt
             },
             data: {
                 name: name
