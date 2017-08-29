@@ -1,6 +1,7 @@
 package com.drazendjanic.ebookrepository.service.impl;
 
 import com.drazendjanic.ebookrepository.entity.Category;
+import com.drazendjanic.ebookrepository.exception.NotFoundException;
 import com.drazendjanic.ebookrepository.repository.ICategoryRepository;
 import com.drazendjanic.ebookrepository.service.ICategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,14 @@ public class CategoryService implements ICategoryService {
 
     @Override
     @Transactional
+    public boolean categoryExists(Long categoryId) {
+        boolean exists = categoryRepository.exists(categoryId);
+
+        return exists;
+    }
+
+    @Override
+    @Transactional
     public Category findCategoryById(Long id) {
         Category category = categoryRepository.findOne(id);
 
@@ -29,6 +38,14 @@ public class CategoryService implements ICategoryService {
         List<Category> categories = categoryRepository.findAll();
 
         return categories;
+    }
+
+    @Override
+    @Transactional
+    public Category saveCategory(Category category) {
+        Category savedCategory = categoryRepository.save(category);
+
+        return savedCategory;
     }
 
 }

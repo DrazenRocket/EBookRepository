@@ -23,7 +23,7 @@
                             var categoryId = data.id;
 
                             $window.alert("Category is added.");
-                            $state.go("category-list");   // TODO redirect
+                            $state.go("category-detail", {categoryId: categoryId});   // TODO redirect
                         }
                     }, function (response) {
                         $window.alert("Category is not added successfully.");

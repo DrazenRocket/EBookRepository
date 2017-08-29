@@ -38,7 +38,9 @@
         </div>
     </div>
 
-    <h2>Books from this category <span class="badge"></span></h2>
+    <h2>
+        Books from this category <span class="badge">{{categoryDetailViewModel.eBookList.length}}</span>
+    </h2>
 
     <div ng-if="categoryDetailViewModel.availableContent"
         class="alert alert-success">

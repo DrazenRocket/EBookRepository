@@ -2,15 +2,14 @@ package com.drazendjanic.ebookrepository.controller;
 
 import com.drazendjanic.ebookrepository.entity.Category;
 import com.drazendjanic.ebookrepository.entity.EBook;
+import com.drazendjanic.ebookrepository.exception.NotFoundException;
 import com.drazendjanic.ebookrepository.service.ICategoryService;
 import com.drazendjanic.ebookrepository.service.IEBookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -44,6 +43,37 @@ public class CategoryController {
         }
         else {
             responseEntity = new ResponseEntity<Category>(category, HttpStatus.NOT_FOUND);
+        }
+
+        return responseEntity;
+    }
+
+    @PostMapping("")
+    @PreAuthorize("isAuthenticated() && hasRole('ROLE_ADMIN')")
+    public ResponseEntity<Category> addCategory(@RequestBody Category category) {
+        ResponseEntity<Category> responseEntity = null;
+        Category savedCategory = null;
+
+        category.setId(null);
+        savedCategory = categoryService.saveCategory(category);
+        responseEntity = new ResponseEntity<Category>(savedCategory, HttpStatus.OK);
+
+        return responseEntity;
+    }
+
+    @PutMapping("/{categoryId}")
+    @PreAuthorize("isAuthenticated() && hasRole('ROLE_ADMIN')")
+    public ResponseEntity<Void> editCategory(@PathVariable Long categoryId, @RequestBody Category category) {
+        ResponseEntity<Void> responseEntity = null;
+        boolean categoryExists = categoryService.categoryExists(categoryId);
+
+        if (categoryExists) {
+            category.setId(categoryId);
+            categoryService.saveCategory(category);
+            responseEntity = new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+        }
+        else {
+            responseEntity = new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
         }
 
         return responseEntity;
