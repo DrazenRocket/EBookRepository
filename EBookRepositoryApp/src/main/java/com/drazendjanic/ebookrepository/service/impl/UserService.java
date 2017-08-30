@@ -19,6 +19,26 @@ public class UserService implements IUserService {
 
     @Override
     @Transactional
+    public boolean userExists(Long id) {
+        boolean exists = userRepository.exists(id);
+
+        return exists;
+    }
+
+    @Override
+    @Transactional
+    public boolean usedUsername(String username) {
+        boolean used = false;
+
+        if (findUserByUsername(username) != null) {
+            used = true;
+        }
+
+        return used;
+    }
+
+    @Override
+    @Transactional
     public User findUserById(Long id) {
         User user = userRepository.findOne(id);
 
@@ -39,6 +59,14 @@ public class UserService implements IUserService {
         List<User> users = userRepository.findAll();
 
         return users;
+    }
+
+    @Override
+    @Transactional
+    public User saveUser(User user) {
+        User savedUser = userRepository.save(user);
+
+        return savedUser;
     }
 
     @Override

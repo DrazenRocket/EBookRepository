@@ -1,6 +1,8 @@
 package com.drazendjanic.ebookrepository.controller;
 
+import com.drazendjanic.ebookrepository.assembler.UserAssembler;
 import com.drazendjanic.ebookrepository.dto.ChangePasswordDto;
+import com.drazendjanic.ebookrepository.dto.NewUserDto;
 import com.drazendjanic.ebookrepository.entity.User;
 import com.drazendjanic.ebookrepository.exception.InvalidPasswordException;
 import com.drazendjanic.ebookrepository.exception.NotFoundException;
@@ -44,6 +46,25 @@ public class UserController {
         }
         else {
             responseEntity = new ResponseEntity<User>(HttpStatus.NOT_FOUND);
+        }
+
+        return responseEntity;
+    }
+
+    @PostMapping("")
+    @PreAuthorize("isAuthenticated() && hasRole('ROLE_ADMIN')")
+    public ResponseEntity<User> addUser(@Validated @RequestBody NewUserDto newUserDto) {
+        ResponseEntity<User> responseEntity = null;
+        User savedUser = null;
+        User newUser = UserAssembler.toUser(newUserDto);
+        boolean usedUsername = userService.usedUsername(newUser.getUsername());
+
+        if (usedUsername || (newUser.getType().equals("ROLE_ADMIN") && newUser.getCategory() != null)) {
+            responseEntity = new ResponseEntity<User>(HttpStatus.BAD_REQUEST);
+        }
+        else {
+            savedUser = userService.saveUser(newUser);
+            responseEntity = new ResponseEntity<User>(savedUser, HttpStatus.OK);
         }
 
         return responseEntity;

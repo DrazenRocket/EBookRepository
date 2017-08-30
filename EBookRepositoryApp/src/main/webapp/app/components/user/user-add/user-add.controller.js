@@ -30,6 +30,7 @@
             });
 
         function addUser(isValid) {
+            viewModel.usedUsername = false;
             if (isValid) {
                 var firstName = viewModel.newUser.firstName;
                 var lastName = viewModel.newUser.lastName;
