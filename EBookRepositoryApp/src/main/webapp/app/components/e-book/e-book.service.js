@@ -9,6 +9,15 @@
         this.$http = $http;
     }
 
+    EBookService.prototype.getAllEBooks = function () {
+        var request = {
+            method: "GET",
+            url: "/api/ebooks"
+        };
+
+        return this.$http(request);
+    };
+
     EBookService.prototype.getAllEBooksByCategoryId = function (categoryId) {
         var request = {
             method: "GET",

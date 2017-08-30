@@ -9,6 +9,9 @@ import java.util.List;
 @Repository
 public interface IEBookRepository extends CrudRepository<EBook, Long> {
 
+    @Override
+    List<EBook> findAll();
+
     List<EBook> findByCategoryId(Long id);
 
 }
