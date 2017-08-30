@@ -79,9 +79,9 @@
             class="form-group" ng-class="{'has-error': userAddForm.category.$invalid && !userAddForm.category.$pristine}">
             <label for="category">*Category</label>
             <select name="category" id="category" ng-model="userAddViewModel.newUser.categoryId"
-                class="form-control" required>
-                <option value="null">--SUBSCRIBED FOR ALL CATEGORIES--</option>
-                <option value="{{category.id}}" ng-repeat="category in userAddViewModel.categoryList">
+                class="form-control">
+                <option ng-value="null">--SUBSCRIBED FOR ALL CATEGORIES--</option>
+                <option ng-value="category.id" ng-repeat="category in userAddViewModel.categoryList">
                     {{category.id}}) {{category.name}}
                 </option>
             </select>

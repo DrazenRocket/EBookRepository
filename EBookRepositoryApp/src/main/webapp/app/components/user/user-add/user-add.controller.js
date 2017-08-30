@@ -15,8 +15,8 @@
         viewModel.newUser.username = "";
         viewModel.newUser.password = "";
         viewModel.newUser.reTypedPassword = "";
-        viewModel.newUser.type = "";
-        viewModel.newUser.categoryId = "";
+        viewModel.newUser.type = null;
+        viewModel.newUser.categoryId = null;
         viewModel.usedUsername = false;
         viewModel.categoryList = [];
         viewModel.addUser = addUser;
