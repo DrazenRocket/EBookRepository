@@ -63,6 +63,26 @@
         return this.$http(request);
     };
 
+    UserService.prototype.editUser = function (userId, firstName, lastName, username, type, categoryId) {
+        var jwt = this.getJwtFromLocalStorage();
+        var request = {
+            method: "PUT",
+            url: "/api/users/" + userId,
+            headers: {
+                "X-Auth-Jwt": jwt
+            },
+            data: {
+                firstName: firstName,
+                lastName: lastName,
+                username: username,
+                type: type,
+                categoryI: categoryId
+            }
+        };
+
+        return this.$http(request);
+    };
+
     UserService.prototype.changePassword = function (userId, oldPassword, newPassword) {
         var jwt = this.getJwtFromLocalStorage();
         var request = {

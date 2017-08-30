@@ -63,6 +63,21 @@
                     }
                 }
             })
+            .state("user-edit-info", {
+                url: "/user-edit-info/:userId",
+                views: {
+                    headerView: {
+                        templateUrl: "app/components/core/core-header/core-header.html",
+                        controller: "CoreHeaderController",
+                        controllerAs: "coreHeaderViewModel"
+                    },
+                    mainView: {
+                        templateUrl: "app/components/user/user-edit/user-edit-info/user-edit-info.html",
+                        controller: "UserEditInfoController",
+                        controllerAs: "userEditInfoViewModel"
+                    }
+                }
+            })
             .state("user-edit-password", {
                 url: "/user-edit-password/:userId",
                 views: {

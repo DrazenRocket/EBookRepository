@@ -100,7 +100,10 @@
                 <div class="panel-body">
                     <div ng-if="userProfileViewModel.isOfLoggedInUser == true || userProfileViewModel.loggedInUserDetails.type == 'ROLE_ADMIN'"
                         class="btn-group btn-group-justified">
-                        <a class="btn btn-warning" href="#">Edit profile</a>
+                        <a class="btn btn-warning"
+                            ui-sref="user-edit-info({userId: userProfileViewModel.userId})">
+                            Edit profile
+                        </a>
                         <a class="btn btn-warning"
                            ui-sref="user-edit-password({userId: userProfileViewModel.userId})">
                             Edit/Change password

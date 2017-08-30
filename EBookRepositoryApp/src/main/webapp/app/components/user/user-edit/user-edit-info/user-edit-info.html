@@ -1,0 +1,99 @@
+<div class="row col-sm-offset-3 col-sm-6">
+    <div class="page-header">
+        <h1 ng-show="userEditInfoViewModel.userId == userEditInfoViewModel.loggedInUserId">
+            Edit your profile
+        </h1>
+        <h1 ng-show="userEditInfoViewModel.userId != userEditInfoViewModel.loggedInUserId">
+            Edit user's profile
+        </h1>
+    </div>
+
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            Id
+        </div>
+
+        <div class="panel-body">
+            {{userEditInfoViewModel.userId}}
+        </div>
+    </div>
+
+    <form name="userEditInfoForm" ng-submit="userEditInfoViewModel.editUser(userEditInfoForm.$valid)" novalidate>
+        <div class="form-group"
+            ng-class="{'has-error': userEditInfoForm.firstName.$invalid && !userEditInfoForm.firstName.$pristine}">
+            <label for="firstName">*First name</label>
+            <input name="firstName" id="firstName" ng-model="userEditInfoViewModel.editedUser.firstName"
+                type="text" class="form-control" required/>
+            <p ng-show="userEditInfoForm.firstName.$invalid && !userEditInfoForm.firstName.$pristine"
+                class="help-block">
+                First name is required.
+            </p>
+        </div>
+
+        <div class="form-group"
+            ng-class="{'has-error': userEditInfoForm.lastName.$invalid && !userEditInfoForm.lastName.$pristine}">
+            <label for="lastName">*Last name</label>
+            <input name="lastName" id="lastName" ng-model="userEditInfoViewModel.editedUser.lastName"
+                type="text" class="form-control" required/>
+            <p ng-show="userEditInfoForm.lastName.$invalid && !userEditInfoForm.lastName.$pristine"
+                class="help-block">
+                Last name is required.
+            </p>
+        </div>
+
+        <div class="form-group"
+            ng-class="{'has-error': userEditInfoForm.username.$invalid && !userEditInfoForm.username.$pristine}">
+            <label>*Username</label>
+            <input name="username" id="username" ng-model="userEditInfoViewModel.editedUser.username"
+                type="text" class="form-control" required/>
+            <p ng-show="userEditInfoForm.username.$invalid && !userEditInfoForm.username.$pristine"
+                class="help-block">
+                Username is required.
+            </p>
+        </div>
+
+        <div ng-if="userEditInfoViewModel.loggedInUserDetails.type == 'ROLE_ADMIN' &&
+            userEditInfoViewModel.loggedInUserId != userEditInfoViewModel.userId">
+            <div class="form-group"
+                ng-class="{'has-error': userEditInfoForm.type.$invalid && !userEditInfoForm.type.$pristine}">
+                <label for="type">*Type</label>
+                <select name="type" id="type" ng-model="userEditInfoViewModel.editedUser.type"
+                    class="form-control" required>
+                    <option value="ROLE_ADMIN" ng-selected="userEditInfoViewModel.editedUser.type == 'ROLE_ADMIN'">
+                        Administrator
+                    </option>
+                    <option value="ROLE_SUBSCRIBER" ng-selected="userEditInfoViewModel.editedUser.type == 'ROLE_SUBSCRIBER'">
+                        Subscriber
+                    </option>
+                </select>
+                <p ng-show="userEditInfoForm.type.$invalid && !userEditInfoForm.type.$pristine">
+                    Type is required.
+                </p>
+            </div>
+
+            <div ng-if="userEditInfoViewModel.editedUser.type == 'ROLE_SUBSCRIBER'"
+                class="form-group">
+                <label for="category">*Category</label>
+                <select name="category" id="category" ng-model="userEditInfoViewModel.editedUser.categoryId"
+                    class="form-control">
+                    <option ng-value="null" ng-selected="userEditInfoViewModel.editedUser.categoryId == 'null'">
+                        --SUBSCRIBED FOR ALL CATEGORIES--
+                    </option>
+                    <option ng-value="category.id" ng-repeat="category in userEditInfoViewModel.categoryList"
+                        ng-selected = "userEditInfoViewModel.editedUser.categoryId == category.id">
+                        {{category.id}}) {{category.name}}
+                    </option>
+                </select>
+            </div>
+        </div>
+
+        <p ng-show="userEditInfoViewModel.usedUsername" class="alert alert-danger">
+            Username is already used!
+        </p>
+
+        <button type="submit" class="btn btn-success btn-block"
+            ng-disabled="userEditInfoForm.$invalid">
+            <span class="glyphicon glyphicon-ok"></span> Edit
+        </button>
+    </form>
+</div>
