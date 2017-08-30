@@ -62,6 +62,8 @@
             });
 
         function editUser(isValid) {
+            viewModel.usedUsername = false;
+
             if (isValid) {
                 var userId = viewModel.userId;
                 var firstName = viewModel.editedUser.firstName;
@@ -83,6 +85,7 @@
                         }
                     }, function (response) {
                         if (response.status == 400) {
+                            $window.alert("User is not edited.");
                             viewModel.usedUsername = true;
                         }
                         else if (response.status == 404) {

@@ -2,6 +2,7 @@ package com.drazendjanic.ebookrepository.controller;
 
 import com.drazendjanic.ebookrepository.assembler.UserAssembler;
 import com.drazendjanic.ebookrepository.dto.ChangePasswordDto;
+import com.drazendjanic.ebookrepository.dto.EditedUserDto;
 import com.drazendjanic.ebookrepository.dto.NewUserDto;
 import com.drazendjanic.ebookrepository.entity.User;
 import com.drazendjanic.ebookrepository.exception.InvalidPasswordException;
@@ -65,6 +66,40 @@ public class UserController {
         else {
             savedUser = userService.saveUser(newUser);
             responseEntity = new ResponseEntity<User>(savedUser, HttpStatus.OK);
+        }
+
+        return responseEntity;
+    }
+
+    @PutMapping("/{userId}/info")
+    @PreAuthorize("isAuthenticated() && (#authenticatedUserId == #userId || hasRole('ROLE_ADMIN'))")
+    public ResponseEntity<Void> editUser(@AuthenticationPrincipal Long authenticatedUserId,
+                                         @PathVariable Long userId,
+                                         @RequestBody EditedUserDto editedUserDto) {
+        ResponseEntity<Void> responseEntity = null;
+        User editedUser = UserAssembler.toUser(editedUserDto);
+        User user = userService.findUserById(userId);
+        boolean usedUsername = userService.usedUsername(editedUser.getUsername());
+        boolean validUsername = false;
+
+        if (user != null) {
+            validUsername = !usedUsername || user.getUsername().equals(editedUser.getUsername());
+
+            if (validUsername && !(editedUser.getType().equals("ROLE_ADMIN") && editedUser.getCategory() != null)) {
+                user.setFirstName(editedUser.getFirstName());
+                user.setLastName(editedUser.getLastName());
+                user.setUsername(editedUser.getUsername());
+                user.setType(editedUser.getType());
+                user.setCategory(editedUser.getCategory());
+                userService.saveUser(user);
+                responseEntity = new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+            }
+            else {
+                responseEntity = new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+            }
+        }
+        else {
+            responseEntity = new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
         }
 
         return responseEntity;

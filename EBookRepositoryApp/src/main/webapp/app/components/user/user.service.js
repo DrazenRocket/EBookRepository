@@ -67,7 +67,7 @@
         var jwt = this.getJwtFromLocalStorage();
         var request = {
             method: "PUT",
-            url: "/api/users/" + userId,
+            url: "/api/users/" + userId + "/info",
             headers: {
                 "X-Auth-Jwt": jwt
             },
