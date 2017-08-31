@@ -14,6 +14,7 @@
         viewModel.loggedInUserDetails = {};
         viewModel.eBookId = $stateParams.eBookId;
         viewModel.eBookDetails = {};
+        viewModel.downloadEBookFile = downloadEBookFile;
 
         if (viewModel.loggedIn) {
             viewModel.loggedInUserId = userService.getUserIdFromLocalStorage();
@@ -33,5 +34,10 @@
                     viewModel.eBookDetails = response.data;
                 }
             });
+
+        function downloadEBookFile(eBookId) {
+            eBookService
+                .downloadEBookFileByEBookId(eBookId);
+        }
     }
 } (angular));
