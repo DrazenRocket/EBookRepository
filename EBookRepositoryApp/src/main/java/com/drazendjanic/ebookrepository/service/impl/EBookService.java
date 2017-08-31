@@ -17,6 +17,14 @@ public class EBookService implements IEBookService {
 
     @Override
     @Transactional
+    public EBook findEBookById(Long id) {
+        EBook eBook = eBookRepository.findOne(id);
+
+        return eBook;
+    }
+
+    @Override
+    @Transactional
     public List<EBook> findAllEBooks() {
         List<EBook> eBooks = eBookRepository.findAll();
 

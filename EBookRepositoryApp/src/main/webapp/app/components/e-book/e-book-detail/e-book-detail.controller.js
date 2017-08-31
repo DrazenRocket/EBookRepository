@@ -3,17 +3,17 @@
 
     angular
         .module("app.eBook")
-        .controller("EBookListController", EBookListController);
+        .controller("EBookDetailController", EBookDetailController);
 
-    EBookListController.$inject = ["eBookService", "userService", "$state"];
-    function EBookListController(eBookService, userService, $state) {
+    EBookDetailController.$inject = ["eBookService", "userService", "$state", "$stateParams"]
+    function EBookDetailController(eBookService, userService, $state, $stateParams) {
         var viewModel = this;
 
         viewModel.loggedIn = userService.isLoggedIn();
         viewModel.loggedInUserId = -1;
         viewModel.loggedInUserDetails = {};
-        viewModel.eBookList = [];
-        viewModel.showEBookDetails = showEBookDetails;
+        viewModel.eBookId = $stateParams.eBookId;
+        viewModel.eBookDetails = {};
 
         if (viewModel.loggedIn) {
             viewModel.loggedInUserId = userService.getUserIdFromLocalStorage();
@@ -27,15 +27,11 @@
         }
 
         eBookService
-            .getAllEBooks()
+            .getEBookById(viewModel.eBookId)
             .then(function (response) {
                 if (response.status == 200) {
-                    viewModel.eBookList = response.data;
+                    viewModel.eBookDetails = response.data;
                 }
             });
-
-        function showEBookDetails(eBookId) {
-            $state.go("e-book-detail", {eBookId: eBookId});
-        }
     }
 } (angular));

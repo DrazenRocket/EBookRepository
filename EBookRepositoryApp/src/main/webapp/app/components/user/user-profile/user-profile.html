@@ -82,12 +82,21 @@
                 <div class="panel-body">
                     <span ng-if="!userProfileViewModel.userDetails.category">
                         Subscribed for all categories
+                        <br/>
+                        <a ui-sref="category-list" class="btn btn-info">
+                            Show all categories
+                        </a>
                     </span>
                     <span ng-if="userProfileViewModel.userDetails.category">
                         Subscribed only for category
                         <span class="label label-info">
                             {{userProfileViewModel.userDetails.category.id}}) {{userProfileViewModel.userDetails.category.name}}
                         </span>
+                        <br/>
+                        <a ui-sref="category-detail({categoryId: userProfileViewModel.userDetails.category.id})"
+                            class="btn  btn-info">
+                            Show the category
+                        </a>
                     </span>
                 </div>
             </div>
@@ -102,7 +111,7 @@
                         class="btn-group btn-group-justified">
                         <a class="btn btn-warning"
                             ui-sref="user-edit-info({userId: userProfileViewModel.userId})">
-                            Edit profile
+                            Edit the profile
                         </a>
                         <a class="btn btn-warning"
                            ui-sref="user-edit-password({userId: userProfileViewModel.userId})">

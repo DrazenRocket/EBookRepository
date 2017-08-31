@@ -6,6 +6,8 @@ import java.util.List;
 
 public interface IEBookService {
 
+    EBook findEBookById(Long id);
+
     List<EBook> findAllEBooks();
 
     List<EBook> findAllEBooksByCategoryId(Long id);

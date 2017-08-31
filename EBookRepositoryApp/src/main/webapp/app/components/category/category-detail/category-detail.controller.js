@@ -5,8 +5,8 @@
         .module("app.category")
         .controller("CategoryDetailController", CategoryDetailController);
 
-    CategoryDetailController.$inject = ["categoryService", "userService", "eBookService", "$stateParams"];
-    function CategoryDetailController(categoryService, userService, eBookService, $stateParams) {
+    CategoryDetailController.$inject = ["categoryService", "userService", "eBookService", "$state", "$stateParams"];
+    function CategoryDetailController(categoryService, userService, eBookService, $state, $stateParams) {
         var viewModel = this;
 
         viewModel.loggedIn = userService.isLoggedIn();
@@ -16,6 +16,7 @@
         viewModel.categoryDetails = {};
         viewModel.eBookList = [];
         viewModel.availableContent = false;
+        viewModel.showEBookDetails = showEBookDetails;
 
         if (viewModel.loggedIn) {
             viewModel.loggedInUserId = userService.getUserIdFromLocalStorage();
@@ -47,5 +48,9 @@
                     viewModel.eBookList = response.data;
                 }
             });
+
+        function showEBookDetails(eBookId) {
+            $state.go("e-book-detail", {eBookId: eBookId});
+        }
     }
 } (angular));

@@ -64,7 +64,8 @@
 
         <tbody>
             <tr ng-repeat="eBook in categoryDetailViewModel.eBookList"
-                ng-class="{'success': categoryDetailViewModel.availableContent}">
+                ng-class="{'success': categoryDetailViewModel.availableContent}"
+                ng-click="categoryDetailViewModel.showEBookDetails(eBook.id)">
                 <td>{{eBook.id}}</td>
                 <td>{{eBook.title}}</td>
                 <td>{{eBook.author}}</td>

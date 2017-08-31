@@ -1,0 +1,146 @@
+<div class="row col-sm-offset-3 col-sm-6">
+    <div class="page-header">
+        <h1>Details of the book </h1>
+    </div>
+
+    <div class="media">
+        <div class="media-left media-top">
+            <img src="assets/img/book.png" class="media-object"/>
+        </div>
+
+        <div class="media-body">
+            <h2 class="media-heading">
+                {{eBookDetailViewModel.eBookDetails.title}}
+            </h2>
+
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    Id
+                </div>
+
+                <div class="panel-body">
+                    {{eBookDetailViewModel.eBookDetails.id}}
+                </div>
+            </div>
+
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    Title
+                </div>
+
+                <div class="panel-body">
+                    {{eBookDetailViewModel.eBookDetails.title}}
+                </div>
+            </div>
+
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    Author
+                </div>
+
+                <div class="panel-body">
+                    {{eBookDetailViewModel.eBookDetails.author}}
+                </div>
+            </div>
+
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    Keywords
+                </div>
+
+                <div class="panel-body">
+                    {{eBookDetailViewModel.eBookDetails.keywords}}
+                </div>
+            </div>
+
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    Publication year
+                </div>
+
+                <div class="panel-body">
+                    {{eBookDetailViewModel.eBookDetails.publicationYear}}
+                </div>
+            </div>
+
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    Language
+                </div>
+
+                <div class="panel-body">
+                    {{eBookDetailViewModel.eBookDetails.language.id}}) {{eBookDetailViewModel.eBookDetails.language.name}}
+                </div>
+            </div>
+
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    Category
+                </div>
+
+                <div class="panel-body">
+                    {{eBookDetailViewModel.eBookDetails.category.id}}) {{eBookDetailViewModel.eBookDetails.category.name}}
+                    <br/>
+                    <a ui-sref="category-detail({categoryId: eBookDetailViewModel.eBookDetails.category.id})" class="btn btn-info">
+                        Show the category
+                    </a>
+                </div>
+            </div>
+
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    Cataloguer
+                </div>
+
+                <div class="panel-body">
+                    <strong>Username:</strong> {{eBookDetailViewModel.eBookDetails.cataloguer.username}}
+                    <br/>
+                    <strong>First name:</strong> {{eBookDetailViewModel.eBookDetails.cataloguer.firstName}}
+                    <br/>
+                    <strong>Last name:</strong> {{eBookDetailViewModel.eBookDetails.cataloguer.lastName}}
+                </div>
+            </div>
+
+            <div class="panel panel-warning">
+                <div class="panel-heading">
+                    Available actions
+                </div>
+
+                <div class="panel-body">
+                    <div ng-if="eBookDetailViewModel.loggedIn && (eBookDetailViewModel.loggedInUserDetails.type == 'ROLE_ADMIN')"
+                        class="btn-group btn-group-justified">
+                        <a href="#" class="btn btn-warning">
+                            Edit the e-book
+                        </a>
+                        <a href="#" class="btn btn-success">
+                            Download the e-book
+                        </a>
+                    </div>
+
+                    <div ng-if="eBookDetailViewModel.loggedIn && (eBookDetailViewModel.loggedInUserDetails.type == 'ROLE_SUBSCRIBER')">
+                        <div ng-if="eBookDetailViewModel.loggedInUserDetails.category == null ||
+                            eBookDetailViewModel.loggedInUserDetails.category.id == eBookDetailViewModel.eBookDetails.category.id"
+                            class="btn-group btn-group-justified">
+                            <a href="#" class="btn btn-success">
+                                Download the e-book
+                            </a>
+                        </div>
+
+                        <div ng-if="!(eBookDetailViewModel.loggedInUserDetails.category == null ||
+                            eBookDetailViewModel.loggedInUserDetails.category.id == eBookDetailViewModel.eBookDetails.category.id)">
+                            <div class="alert alert-danger">
+                                You must to be subscribed if you want to download.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div ng-if="!eBookDetailViewModel.loggedIn">
+                        <div class="alert alert-danger">
+                            You must be logged if you want to download this book.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
