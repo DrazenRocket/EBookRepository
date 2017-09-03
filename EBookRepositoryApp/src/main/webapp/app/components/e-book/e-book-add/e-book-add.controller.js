@@ -44,8 +44,10 @@
 
         function uploadEBookFile(eBookFile) {
             if (eBookFile) {
+                var mime = "application/pdf";
+
                 eBookService
-                    .uploadEBookFile(eBookFile, viewModel.newEBook.mime)
+                    .uploadEBookFile(eBookFile, mime)
                     .then(function (response) {
                         viewModel.uploadingEBookFileProgress = null;
                         viewModel.uploadedEBookFile = true;
@@ -57,6 +59,7 @@
                             viewModel.newEBook.author = data.author;
                             viewModel.newEBook.keywords = data.keywords;
                             viewModel.newEBook.filename = data.filename;
+                            viewModel.newEBook.mime = mime;
                             viewModel.uploadedEBookFilename = eBookFile.name;
                         }
                     }, function (response) {

@@ -21,6 +21,11 @@
         viewModel.editedEBook.mime = "";
         viewModel.categoryList = [];
         viewModel.languageList = [];
+        viewModel.useNewEBookFile = false;
+        viewModel.uploadingEBookFileProgress = null;
+        viewModel.uploadedEBookFile = false;
+        viewModel.uploadedEBookFilename = null;
+        viewModel.uploadEBookFile = uploadEBookFile;
         viewModel.editEBook = editEBook;
 
         eBookService
@@ -55,6 +60,37 @@
                     viewModel.languageList = response.data;
                 }
             });
+
+        function uploadEBookFile(eBookFile) {
+            if (eBookFile) {
+                var mime = "application/pdf";
+                
+                eBookService
+                    .uploadEBookFile(eBookFile, mime)
+                    .then(function (response) {
+                        viewModel.uploadingEBookFileProgress = null;
+                        viewModel.uploadedEBookFile = true;
+
+                        if (response.status == 200) {
+                            var data = response.data;
+
+                            viewModel.useNewEBookFile = true;
+                            viewModel.editedEBook.title = data.title;
+                            viewModel.editedEBook.author = data.author;
+                            viewModel.editedEBook.keywords = data.keywords;
+                            viewModel.editedEBook.filename = data.filename;
+                            viewModel.editedEBook.mime = mime;
+                            viewModel.uploadedEBookFilename = eBookFile.name;
+                        }
+                    }, function (response) {
+                        viewModel.uploadingEBookFileProgress = null;
+                        viewModel.uploadedEBookFile = false;
+                        $window.alert("File is not uploaded.");
+                    }, function (notify) {
+                        viewModel.uploadingEBookFileProgress = parseInt(100.0 * notify.loaded / notify.total);
+                    });
+            }
+        }
 
         function editEBook(isValid) {
             if (isValid) {
