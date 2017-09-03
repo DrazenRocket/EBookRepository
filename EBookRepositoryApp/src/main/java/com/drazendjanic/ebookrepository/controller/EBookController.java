@@ -2,6 +2,7 @@ package com.drazendjanic.ebookrepository.controller;
 
 import com.drazendjanic.ebookrepository.assembler.EBookAssembler;
 import com.drazendjanic.ebookrepository.dto.BaseMetadataDto;
+import com.drazendjanic.ebookrepository.dto.EditedEBookDto;
 import com.drazendjanic.ebookrepository.dto.NewEBookDto;
 import com.drazendjanic.ebookrepository.entity.EBook;
 import com.drazendjanic.ebookrepository.entity.User;
@@ -18,6 +19,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -65,7 +67,7 @@ public class EBookController {
     @PostMapping("")
     @PreAuthorize("isAuthenticated() && hasRole('ROLE_ADMIN')")
     public ResponseEntity<EBook> addEBook(@AuthenticationPrincipal Long authenticatedUserId,
-                                          @RequestBody NewEBookDto newEBookDto) {
+                                          @Validated @RequestBody NewEBookDto newEBookDto) {
         ResponseEntity<EBook> responseEntity = null;
         EBook savedEBook = null;
         EBook newEBook = EBookAssembler.toEBook(newEBookDto);
@@ -77,6 +79,34 @@ public class EBookController {
         savedEBook = eBookService.saveEBook(newEBook);
         savedEBook.getCataloguer().setPassword(null);
         responseEntity = new ResponseEntity<EBook>(savedEBook, HttpStatus.OK);
+
+        return responseEntity;
+    }
+
+    @PutMapping("/{eBookId}")
+    @PreAuthorize("isAuthenticated() && hasRole('ROLE_ADMIN')")
+    public ResponseEntity<Void> editUser(@PathVariable Long eBookId,
+                                         @Validated @RequestBody EditedEBookDto editedEBookDto) {
+        ResponseEntity<Void> responseEntity = null;
+        EBook editedEBook = EBookAssembler.toEBook(editedEBookDto);
+        EBook eBook = eBookService.findEBookById(eBookId);
+
+        if (eBook != null) {
+            eBook.setCategory(editedEBook.getCategory());
+            eBook.setLanguage(editedEBook.getLanguage());
+            eBook.setTitle(editedEBook.getTitle());
+            eBook.setAuthor(editedEBook.getAuthor());
+            eBook.setKeywords(editedEBook.getKeywords());
+            eBook.setPublicationYear(editedEBook.getPublicationYear());
+            eBook.setFilename(editedEBook.getFilename());
+            eBook.setMime(editedEBook.getMime());
+            eBookService.saveEBook(eBook);
+
+            responseEntity = new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+        }
+        else {
+            responseEntity = new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
+        }
 
         return responseEntity;
     }

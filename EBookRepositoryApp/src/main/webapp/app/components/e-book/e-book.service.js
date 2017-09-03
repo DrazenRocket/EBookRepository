@@ -77,6 +77,29 @@
         return this.$http(request);
     };
 
+    EBookService.prototype.editEBook = function(eBookId, categoryId, languageId, title, author, keywords, publicationYear, filename, mime) {
+        var jwt = this.userService.getJwtFromLocalStorage();
+        var request = {
+            method: "PUT",
+            url: "/api/ebooks/" + eBookId,
+            headers: {
+                "X-Auth-Jwt": jwt
+            },
+            data: {
+                categoryId: categoryId,
+                languageId: languageId,
+                title: title,
+                author: author,
+                keywords: keywords,
+                publicationYear: publicationYear,
+                filename: filename,
+                mime: mime
+            }
+        };
+
+        return this.$http(request);
+    };
+
     EBookService.prototype.uploadEBookFile = function (eBookFile, mime) {
         var jwt = this.userService.getJwtFromLocalStorage();
         var request = {

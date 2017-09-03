@@ -14,6 +14,7 @@
         viewModel.loggedInUserDetails = {};
         viewModel.eBookId = $stateParams.eBookId;
         viewModel.eBookDetails = {};
+        viewModel.editEBook = editEBook;
         viewModel.downloadEBookFile = downloadEBookFile;
 
         if (viewModel.loggedIn) {
@@ -34,6 +35,10 @@
                     viewModel.eBookDetails = response.data;
                 }
             });
+
+        function editEBook(eBookId) {
+            $state.go("e-book-edit", {eBookId: eBookId});
+        }
 
         function downloadEBookFile(eBookId) {
             eBookService

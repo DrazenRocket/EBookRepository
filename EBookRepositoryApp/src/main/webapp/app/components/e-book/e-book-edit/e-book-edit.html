@@ -1,0 +1,83 @@
+<div class="row col-sm-offset-3 col-sm-6">
+    <div class="page-header">
+        <h1>Edit the e-book</h1>
+    </div>
+
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            Id
+        </div>
+
+        <div class="panel-body">
+            {{eBookEditViewModel.eBookId}}
+        </div>
+    </div>
+
+    <form name="eBookEditForm" ng-submit="eBookEditViewModel.editEBook(eBookEditForm.$valid)" required>
+        <div class="form-group"
+            ng-class="{'has-error': eBookEditForm.category.$invalid && !eBookEditForm.category.$pristine}">
+            <label for="category">*Category</label>
+            <select name="category" id="category" ng-model="eBookEditViewModel.editedEBook.categoryId"
+                class="form-control" required>
+                <option ng-value="category.id" ng-repeat="category in eBookEditViewModel.categoryList"
+                    ng-selected="eBookEditViewModel.editedEBook.categoryId == category.id">
+                    {{category.id}}) {{category.name}}
+                </option>
+            </select>
+            <p ng-show="eBookEditForm.category.$invalid && !eBookEditForm.category.$pristine"
+                class="help-block">
+                Category is required.
+            </p>
+        </div>
+
+        <div class="form-group"
+            ng-class="{'has-error': eBookEditForm.language.$invalid && !eBookEditForm.language.$pristine}">
+            <label for="language">*Language</label>
+            <select name="language" id="language" ng-model="eBookEditViewModel.editedEBook.languageId"
+                class="form-control" required>
+                <option ng-value="language.id" ng-repeat="language in eBookEditViewModel.languageList"
+                    ng-selected="eBookEditViewModel.editedEBook.languageId == language.id">
+                    {{language.id}}) {{language.name}}
+                </option>
+            </select>
+            <p ng-show="eBookEditForm.language.$invalid && !eBookEditForm.language.$pristine"
+                class="help-block">
+                Language is required.
+            </p>
+        </div>
+
+        <div class="form-group"
+            ng-class="{'has-error': eBookEditForm.title.$invalid && !eBookEditForm.title.$pristine}">
+            <label for="title">*Title</label>
+            <input name="title" id="title" ng-model="eBookEditViewModel.editedEBook.title"
+                type="text" class="form-control" required/>
+            <p ng-show="eBookEditForm.title.$invalid && !eBookEditForm.title.$pristine">
+                Title is required.
+            </p>
+        </div>
+
+        <div class="form-group">
+            <label for="author">Author</label>
+            <input name="author" id="author" ng-model="eBookEditViewModel.editedEBook.author"
+                type="text" class="form-control"/>
+        </div>
+
+        <div class="form-group">
+            <label for="keywords">Keywords</label>
+            <textarea name="keywords" id="keywords" ng-model="eBookEditViewModel.editedEBook.keywords"
+                class="form-control" rows="3">
+            </textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="publicationYear">Publication year</label>
+            <input name="publicationYear" id="publicationYear" ng-model="eBookEditViewModel.editedEBook.publicationYear"
+                type="number" class="form-control"/>
+        </div>
+
+        <button type="submit" class="btn btn-success btn-block"
+            ng-disabled="eBookEditForm.$invalid">
+            <span class="glyphicon glyphicon-ok"></span> Edit
+        </button>
+    </form>
+</div>

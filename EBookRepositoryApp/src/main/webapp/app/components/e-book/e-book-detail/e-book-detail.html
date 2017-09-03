@@ -110,7 +110,8 @@
                     <div ng-if="eBookDetailViewModel.loggedIn && (eBookDetailViewModel.loggedInUserDetails.type == 'ROLE_ADMIN')"
                         class="btn-group btn-group-justified">
                         <div class="btn-group">
-                            <button type="button" class="btn btn-warning">
+                            <button ng-click="eBookDetailViewModel.editEBook(eBookDetailViewModel.eBookDetails.id)"
+                                type="button" class="btn btn-warning">
                                 Edit this e-book
                             </button>
                         </div>
