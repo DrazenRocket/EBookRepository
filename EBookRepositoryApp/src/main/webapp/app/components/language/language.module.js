@@ -2,5 +2,5 @@
     "use strict";
 
     angular
-        .module("app.eBook", ["ui.router", "ngFileUpload"]);
+        .module("app.language", []);
 } (angular));

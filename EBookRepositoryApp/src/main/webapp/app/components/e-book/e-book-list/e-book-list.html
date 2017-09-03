@@ -5,7 +5,9 @@
 
     <div class="btn-group btn-group-justified">
         <a ng-if="eBookListViewModel.loggedIn && (eBookListViewModel.loggedInUserDetails.type == 'ROLE_ADMIN')"
-            href="#" class="btn btn-primary">Add a new book</a>
+            ui-sref="e-book-add" class="btn btn-primary">
+            Add a new book
+        </a>
     </div>
 
     <table class="table table-striped table-bordered table-hover">

@@ -1,10 +1,15 @@
 package com.drazendjanic.ebookrepository.controller;
 
+import com.drazendjanic.ebookrepository.assembler.EBookAssembler;
+import com.drazendjanic.ebookrepository.dto.BaseMetadataDto;
+import com.drazendjanic.ebookrepository.dto.NewEBookDto;
 import com.drazendjanic.ebookrepository.entity.EBook;
 import com.drazendjanic.ebookrepository.entity.User;
 import com.drazendjanic.ebookrepository.exception.NotFoundException;
 import com.drazendjanic.ebookrepository.service.IEBookService;
 import com.drazendjanic.ebookrepository.service.IUserService;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDDocumentInformation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
@@ -13,11 +18,10 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
@@ -58,6 +62,56 @@ public class EBookController {
         return responseEntity;
     }
 
+    @PostMapping("")
+    @PreAuthorize("isAuthenticated() && hasRole('ROLE_ADMIN')")
+    public ResponseEntity<EBook> addEBook(@AuthenticationPrincipal Long authenticatedUserId,
+                                          @RequestBody NewEBookDto newEBookDto) {
+        ResponseEntity<EBook> responseEntity = null;
+        EBook savedEBook = null;
+        EBook newEBook = EBookAssembler.toEBook(newEBookDto);
+        User authenticatedUser = new User();
+
+        authenticatedUser.setId(authenticatedUserId);
+        newEBook.setCataloguer(authenticatedUser);
+
+        savedEBook = eBookService.saveEBook(newEBook);
+        savedEBook.getCataloguer().setPassword(null);
+        responseEntity = new ResponseEntity<EBook>(savedEBook, HttpStatus.OK);
+
+        return responseEntity;
+    }
+
+    @PostMapping("/files")
+    @PreAuthorize("isAuthenticated() && hasRole('ROLE_ADMIN')")
+    public ResponseEntity<BaseMetadataDto> addEBookFile(@RequestParam("file") MultipartFile file) {
+        ResponseEntity<BaseMetadataDto> responseEntity = null;
+
+        if (!file.isEmpty()) {
+            try {
+                File eBookFile = eBookService.saveEBookFile(file.getBytes());
+                PDDocument document = PDDocument.load(eBookFile);
+                PDDocumentInformation documentInformation = document.getDocumentInformation();
+                BaseMetadataDto baseMetadataDto = new BaseMetadataDto();
+
+                baseMetadataDto.setTitle(documentInformation.getTitle());
+                baseMetadataDto.setAuthor(documentInformation.getAuthor());
+                baseMetadataDto.setKeywords(documentInformation.getKeywords());
+                baseMetadataDto.setFilename(eBookFile.getName());
+                document.close();
+
+                responseEntity = new ResponseEntity<BaseMetadataDto>(baseMetadataDto, HttpStatus.OK);
+            }
+            catch (IOException e) {
+                responseEntity = new ResponseEntity<BaseMetadataDto>(HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        }
+        else {
+            responseEntity = new ResponseEntity<BaseMetadataDto>(HttpStatus.BAD_REQUEST);
+        }
+
+        return responseEntity;
+    }
+
     @GetMapping("/{eBookId}/file")
     @PreAuthorize("isAuthenticated() && hasAnyRole('ROLE_ADMIN', 'ROLE_SUBSCRIBER')")
     public ResponseEntity<Resource> downloadEBookFileByEBookId(@AuthenticationPrincipal Long authenticatedUserId,
@@ -70,10 +124,15 @@ public class EBookController {
             if (user.getType().equals("ROLE_ADMIN") || (user.getType().equals("ROLE_SUBSCRIBER") && (user.getCategory() == null || user.getCategory().getId() == eBook.getCategory().getId()))) {
                 try {
                     Resource resource = eBookService.loadEBookFileByEBookId(eBookId);
+                    String mime = eBook.getMime();
+
+                    if (eBook.getMime() != null) {
+                        mime = "application/pdf";
+                    }
 
                     responseEntity = ResponseEntity.ok()
                             .contentLength(resource.contentLength())
-                            .contentType(MediaType.parseMediaType(eBook.getMime()))
+                            .contentType(MediaType.parseMediaType(mime))
                             .body(resource);
                 }
                 catch (NotFoundException e) {

@@ -10,8 +10,10 @@ import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -49,6 +51,44 @@ public class EBookService implements IEBookService {
         List<EBook> eBooks = eBookRepository.findByCategoryId(id);
 
         return eBooks;
+    }
+
+    @Override
+    @Transactional
+    public EBook saveEBook(EBook eBook) {
+        EBook savedEBook = null;
+        String fileName = repositoryPath + eBook.getFilename();
+        File file = new File(fileName);
+
+        if (file.exists() && !file.isDirectory()) {
+            savedEBook = eBookRepository.save(eBook);
+        }
+        else {
+            throw new IllegalArgumentException("File name is not valid.");
+        }
+
+        return savedEBook;
+    }
+
+    @Override
+    @Transactional
+    public File createEBookFile() throws IOException {
+        File repository = new File(repositoryPath);
+        File eBookFile = File.createTempFile("ebook", ".pdf", repository);
+
+        return eBookFile;
+    }
+
+    @Override
+    @Transactional
+    public File saveEBookFile(byte[] bytes) throws IOException {
+        File eBookFile = createEBookFile();
+        FileOutputStream fileOutputStream = new FileOutputStream(eBookFile);
+
+        fileOutputStream.write(bytes);
+        fileOutputStream.close();
+
+        return eBookFile;
     }
 
     @Override

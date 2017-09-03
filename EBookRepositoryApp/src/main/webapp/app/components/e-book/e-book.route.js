@@ -37,6 +37,21 @@
                         controllerAs: "eBookDetailViewModel"
                     }
                 }
+            })
+            .state("e-book-add", {
+                url: "/e-book-add",
+                views: {
+                    headerView: {
+                        templateUrl: "app/components/core/core-header/core-header.html",
+                        controller: "CoreHeaderController",
+                        controllerAs: "coreHeaderViewModel"
+                    },
+                    mainView: {
+                        templateUrl: "app/components/e-book/e-book-add/e-book-add.html",
+                        controller: "EBookAddController",
+                        controllerAs: "eBookAddViewModel"
+                    }
+                }
             });
     }
 } (angular));

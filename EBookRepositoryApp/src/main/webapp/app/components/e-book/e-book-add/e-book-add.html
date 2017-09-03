@@ -1,0 +1,93 @@
+<div class="row col-sm-offset-3 col-sm-6">
+    <div class="page-header">
+        <h1>Add a new e-book</h1>
+    </div>
+
+    <form name="eBookAddForm" ng-submit="eBookAddViewModel.addEBook(eBookAddForm.$valid)" novalidate>
+
+        <button type="button" class="btn btn-primary btn-block"
+            ngf-select="eBookAddViewModel.uploadEBookFile($file)" ngf-accept="'application/pdf'"
+            ng-disabled="eBookAddViewModel.uploadingEBookFileProgress">
+            *Choose and upload an e-book file (*.pdf)
+        </button>
+
+        <div ng-show="eBookAddViewModel.uploadingEBookFileProgress" class="progress">
+            <div class="progress-bar progress-bar-striped active" role="progressbar"
+                aria-valuenow="{{eBookAddViewModel.uploadingEBookFileProgress}}"
+                aria-valuemin="0" aria-valuemax="100" style="width: {{eBookAddViewModel.uploadingEBookFileProgress}}%">
+                {{eBookAddViewModel.uploadingEBookFileProgress}}%
+            </div>
+        </div>
+
+        <div ng-if="eBookAddViewModel.uploadedEBookFile">
+            <div class="alert alert-info">
+                <strong>Uploaded file: </strong> {{eBookAddViewModel.uploadedEBookFilename}}
+            </div>
+
+            <div class="form-group"
+                 ng-class="{'has-error': eBookAddForm.category.$invalid && !eBookAddForm.category.$pristine}">
+                <label for="category">*Category</label>
+                <select name="category" id="category" ng-model="eBookAddViewModel.newEBook.categoryId"
+                        class="form-control" required>
+                    <option ng-value="category.id" ng-repeat="category in eBookAddViewModel.categoryList">
+                        {{category.id}}) {{category.name}}
+                    </option>
+                </select>
+                <p ng-show="eBookAddForm.category.$invalid && !eBookAddForm.category.$pristine"
+                   class="help-block">
+                    Category is required.
+                </p>
+            </div>
+
+            <div class="form-group"
+                 ng-class="{'has-error': eBookAddForm.language.$invalid && !eBookAddForm.language.$pristine}">
+                <label for="language">*Language</label>
+                <select name="language" id="language" ng-model="eBookAddViewModel.newEBook.languageId"
+                        class="form-control" required>
+                    <option ng-value="language.id" ng-repeat="language in eBookAddViewModel.languageList">
+                        {{language.id}}) {{language.name}}
+                    </option>
+                </select>
+                <p ng-show="eBookAddForm.language.$invalid && !eBookAddForm.language.$pristine"
+                   class="help-block">
+                    Language is required
+                </p>
+            </div>
+
+            <div class="form-group"
+                 ng-class="{'has-error': eBookAddForm.title.$invalid && !eBookAddForm.title.$pristine}">
+                <label for="title">*Title</label>
+                <input name="title" id="title" ng-model="eBookAddViewModel.newEBook.title"
+                       type="text" class="form-control" required/>
+                <p ng-show="eBookAddForm.title.$invalid && !eBookAddForm.title.$pristine"
+                   class="help-block">
+                    Title is required.
+                </p>
+            </div>
+
+            <div class="form-group">
+                <label for="author">Author</label>
+                <input name="author" id="author" ng-model="eBookAddViewModel.newEBook.author"
+                       type="text" class="form-control"/>
+            </div>
+
+            <div class="form-group">
+                <label for="keywords">Keywords</label>
+            <textarea name="keywords" id="keywords" ng-model="eBookAddViewModel.newEBook.keywords"
+                      class="form-control" rows="3">
+            </textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="publicationYear">Publication year</label>
+                <input name="publicationYear" id="publicationYear" ng-model="eBookAddViewModel.newEBook.publicationYear"
+                       type="number" class="form-control" ng-init="null" />
+            </div>
+
+            <button type="submit" class="btn btn-success btn-block"
+                    ng-disabled="eBookAddForm.$invalid">
+                <span class="glyphicon glyphicon-ok"> Add</span>
+            </button>
+        </div>
+    </form>
+</div>
