@@ -85,7 +85,7 @@ public class EBookController {
 
     @PutMapping("/{eBookId}")
     @PreAuthorize("isAuthenticated() && hasRole('ROLE_ADMIN')")
-    public ResponseEntity<Void> editUser(@PathVariable Long eBookId,
+    public ResponseEntity<Void> editEBook(@PathVariable Long eBookId,
                                          @Validated @RequestBody EditedEBookDto editedEBookDto) {
         ResponseEntity<Void> responseEntity = null;
         EBook editedEBook = EBookAssembler.toEBook(editedEBookDto);
