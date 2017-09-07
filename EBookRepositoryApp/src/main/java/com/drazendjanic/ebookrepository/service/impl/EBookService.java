@@ -10,7 +10,6 @@ import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -26,8 +25,8 @@ public class EBookService implements IEBookService {
     @Autowired
     private IEBookRepository eBookRepository;
 
-    @Value("${e-book-repository.file-repository.base-path}")
-    private String repositoryPath;
+    @Value("${e-book-repository.file-repository.raw-data-path}")
+    private String rawDataRepositoryPath;
 
     @Override
     @Transactional
@@ -57,7 +56,7 @@ public class EBookService implements IEBookService {
     @Transactional
     public EBook saveEBook(EBook eBook) {
         EBook savedEBook = null;
-        String fileName = repositoryPath + eBook.getFilename();
+        String fileName = rawDataRepositoryPath + eBook.getFilename();
         File file = new File(fileName);
 
         if (file.exists() && !file.isDirectory()) {
@@ -73,7 +72,7 @@ public class EBookService implements IEBookService {
     @Override
     @Transactional
     public File createEBookFile() throws IOException {
-        File repository = new File(repositoryPath);
+        File repository = new File(rawDataRepositoryPath);
         File eBookFile = File.createTempFile("ebook", ".pdf", repository);
 
         return eBookFile;
@@ -98,7 +97,7 @@ public class EBookService implements IEBookService {
         EBook eBook = findEBookById(id);
 
         if (eBook != null) {
-            String fileName = repositoryPath + eBook.getFilename();
+            String fileName = rawDataRepositoryPath + eBook.getFilename();
             File file = new File(fileName);
             Path filePath = Paths.get(file.getAbsolutePath());
 
