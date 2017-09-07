@@ -17,6 +17,14 @@ public class LanguageService implements ILanguageService {
 
     @Override
     @Transactional
+    public Language findLanguageById(Long id) {
+        Language language = languageRepository.findOne(id);
+
+        return language;
+    }
+
+    @Override
+    @Transactional
     public List<Language> findAllLanguages() {
         List<Language> languages = languageRepository.findAll();
 

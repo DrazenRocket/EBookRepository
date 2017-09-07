@@ -1,9 +1,16 @@
 package com.drazendjanic.ebookrepository.service.impl;
 
 import com.drazendjanic.ebookrepository.entity.EBook;
+import com.drazendjanic.ebookrepository.entity.Language;
+import com.drazendjanic.ebookrepository.exception.IncompleteIndexDocumentException;
 import com.drazendjanic.ebookrepository.exception.NotFoundException;
+import com.drazendjanic.ebookrepository.ir.indexer.DocumentIndexer;
+import com.drazendjanic.ebookrepository.ir.indexer.handler.DocumentHandler;
+import com.drazendjanic.ebookrepository.ir.indexer.handler.PdfHandler;
 import com.drazendjanic.ebookrepository.repository.IEBookRepository;
 import com.drazendjanic.ebookrepository.service.IEBookService;
+import com.drazendjanic.ebookrepository.service.ILanguageService;
+import org.apache.lucene.document.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ByteArrayResource;
@@ -11,6 +18,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.PostConstruct;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -25,8 +33,24 @@ public class EBookService implements IEBookService {
     @Autowired
     private IEBookRepository eBookRepository;
 
+    @Autowired
+    private ILanguageService languageService;
+
     @Value("${e-book-repository.file-repository.raw-data-path}")
     private String rawDataRepositoryPath;
+
+    @Value("${e-book-repository.file-repository.indexed-data-path}")
+    private String indexedDataRepositoryPath;
+
+    private DocumentHandler documentHandler;
+
+    private DocumentIndexer documentIndexer;
+
+    @PostConstruct
+    public void init() {
+        documentHandler = new PdfHandler();
+        documentIndexer = new DocumentIndexer(indexedDataRepositoryPath);
+    }
 
     @Override
     @Transactional
@@ -61,6 +85,7 @@ public class EBookService implements IEBookService {
 
         if (file.exists() && !file.isDirectory()) {
             savedEBook = eBookRepository.save(eBook);
+            indexEBook(eBook);
         }
         else {
             throw new IllegalArgumentException("File name is not valid.");
@@ -108,6 +133,24 @@ public class EBookService implements IEBookService {
         }
 
         return loadedFile;
+    }
+
+    @Override
+    @Transactional
+    public void indexEBook(EBook eBook) {
+        try {
+            Language language = languageService.findLanguageById(eBook.getLanguage().getId());
+            Document document = documentHandler.getDocument(eBook, language, rawDataRepositoryPath);
+
+            if (eBook.getId() != null) {
+                documentIndexer.deleteDocumentByIdField(eBook.getId().toString());
+            }
+
+            documentIndexer.addDocument(document);
+        }
+        catch (IncompleteIndexDocumentException e) {
+            e.printStackTrace();
+        }
     }
 
 }

@@ -6,6 +6,8 @@ import java.util.List;
 
 public interface ILanguageService {
 
+    Language findLanguageById(Long id);
+
     List<Language> findAllLanguages();
 
 }

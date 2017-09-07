@@ -1,6 +1,7 @@
 package com.drazendjanic.ebookrepository.ir.indexer.handler;
 
 import com.drazendjanic.ebookrepository.entity.EBook;
+import com.drazendjanic.ebookrepository.entity.Language;
 import com.drazendjanic.ebookrepository.exception.IncompleteIndexDocumentException;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
@@ -9,7 +10,6 @@ import org.apache.lucene.document.TextField;
 import org.apache.pdfbox.pdfparser.PDFParser;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.util.PDFTextStripper;
-import org.springframework.beans.factory.annotation.Value;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -17,16 +17,13 @@ import java.io.IOException;
 
 public class PdfHandler extends DocumentHandler {
 
-    @Value("${e-book-repository.file-repository.base-path}")
-    private String repositoryPath;
-
     @Override
-    public Document getDocument(EBook eBook) throws IncompleteIndexDocumentException {      // TODO Try to add version with File as parameter type and don't use repositoryPath field
+    public Document getDocument(EBook eBook, Language language, String repositoryPath) throws IncompleteIndexDocumentException {
         Document document = new Document();
 
         document.add(new StringField("id", eBook.getId().toString(), Field.Store.YES));
         document.add(new TextField("filename", eBook.getFilename(), Field.Store.YES));
-        document.add(new TextField("language", eBook.getLanguage().getName(), Field.Store.YES));
+        document.add(new TextField("language", language.getName(), Field.Store.YES));
         document.add(new TextField("title", eBook.getTitle(), Field.Store.YES));
 
         if (eBook.getAuthor() != null && !eBook.getAuthor().trim().equals("")) {

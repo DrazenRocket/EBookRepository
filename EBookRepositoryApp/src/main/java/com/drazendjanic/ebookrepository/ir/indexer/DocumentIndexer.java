@@ -23,6 +23,10 @@ public class DocumentIndexer {
 
     private Directory indexDirectory;
 
+    public DocumentIndexer(String path) {
+        this(path, false);
+    }
+
     public DocumentIndexer(String path, boolean restart) {
         try {
             indexDirectory = new SimpleFSDirectory(new File(path));
@@ -71,6 +75,23 @@ public class DocumentIndexer {
         return successful;
     }
 
+    public boolean updateDocument(int id, IndexableField... fields) {
+        boolean successful = false;
+
+        try {
+            DirectoryReader directoryReader = DirectoryReader.open(indexDirectory);
+            Document document = directoryReader.document(id);
+
+            successful = updateDocument(document, fields);
+            directoryReader.close(); // TODO Check this
+        }
+        catch (IOException e) {
+            successful = true;
+        }
+
+        return successful;
+    }
+
     public boolean updateDocument(Document document, IndexableField... fields) {
         boolean successful = false;
         String documentId = document.get("id");
@@ -96,20 +117,6 @@ public class DocumentIndexer {
         return successful;
     }
 
-    public boolean updateDocument(int id, IndexableField... fields) {
-        boolean successful = false;
-
-        try {
-            DirectoryReader directoryReader = DirectoryReader.open(indexDirectory);
-            successful = updateDocument(directoryReader.document(id), fields);
-        }
-        catch (IOException e) {
-            successful = true;
-        }
-
-        return successful;
-    }
-
     public void replaceFields(Document document, IndexableField... fields) {
         for (IndexableField field : fields) {
             document.removeFields(field.name());
@@ -119,27 +126,67 @@ public class DocumentIndexer {
         }
     }
 
+    public boolean deleteDocument(int id) {
+        boolean successful = false;
+
+        try {
+            DirectoryReader directoryReader = DirectoryReader.open(indexDirectory);
+            Document document = directoryReader.document(id);
+
+            successful = deleteDocument(document);
+            directoryReader.close(); // TODO Check this
+        }
+        catch (IOException e) {
+            successful = false;
+        }
+
+        return successful;
+    }
+
     public boolean deleteDocument(Document document) {
         boolean successful = false;
 
         if (document != null) {
-            Term term = new Term("id", document.get("id"));
+            successful = deleteDocument("id", document.get("id"));
+        }
 
-            try {
-                synchronized (this) {
-                    openIndexWriter();
-                    indexWriter.deleteDocuments(term);
-                    indexWriter.deleteUnusedFiles();
-                    indexWriter.forceMergeDeletes();
-                    indexWriter.commit();
-                    indexWriter.close();
-                }
+        return successful;
+    }
 
-                successful = true;
+    public boolean deleteDocumentByIdField(String fieldValue) {
+        boolean successful = false;
+
+        successful = deleteDocument("id", fieldValue);
+
+        return successful;
+    }
+
+    public boolean deleteDocument(String fieldName, String fieldValue) {
+        boolean successful = false;
+        Term term = new Term(fieldName, fieldValue);
+
+        successful = deleteDocuments(term);
+
+        return successful;
+    }
+
+    public boolean deleteDocuments(Term... terms) {
+        boolean successful = false;
+
+        try {
+            synchronized (this) {
+                openIndexWriter();
+                indexWriter.deleteDocuments(terms);
+                indexWriter.deleteUnusedFiles();
+                indexWriter.forceMergeDeletes();
+                indexWriter.commit();
+                indexWriter.close();
             }
-            catch (IOException e) {
-                successful = false;
-            }
+
+            successful = true;
+        }
+        catch (IOException e) {
+            successful = false;
         }
 
         return successful;
@@ -155,6 +202,8 @@ public class DocumentIndexer {
             for (int i = 0; i < directoryReader.maxDoc(); i++) {
                 documents[i] = directoryReader.document(i);
             }
+
+            directoryReader.close(); // TODO Check this
         }
         catch (IOException e) {
             documents = null;

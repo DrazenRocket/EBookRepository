@@ -25,4 +25,6 @@ public interface IEBookService {
 
     Resource loadEBookFileByEBookId(Long id) throws NotFoundException, IOException;
 
+    void indexEBook(EBook eBook);
+
 }
