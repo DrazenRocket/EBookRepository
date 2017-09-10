@@ -17,17 +17,19 @@ public class CyrillicToLatinFilter extends TokenFilter {
     }
 
     @Override
-    public boolean incrementToken()throws IOException {
+    public boolean incrementToken() throws IOException {
+        boolean successful = false;
+
         if (input.incrementToken()) {
             String text = termAttribute.toString();
 
             termAttribute.setEmpty();
             termAttribute.append(CyrillicLatinConverter.cir2lat(text));
 
-            return true;
+            successful = true;
         }
 
-        return false;
+        return successful;
     }
 
 }

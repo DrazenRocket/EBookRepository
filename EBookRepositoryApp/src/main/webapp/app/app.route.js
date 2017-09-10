@@ -8,5 +8,6 @@
     configRoute.$inject = ["$locationProvider", "$urlRouterProvider", "$stateProvider"];
     function configRoute($locationProvider, $urlRouterProvider, $stateProvider) {
         $locationProvider.hashPrefix("!");
+        $urlRouterProvider.otherwise("/e-book-search");
     }
 } (angular));

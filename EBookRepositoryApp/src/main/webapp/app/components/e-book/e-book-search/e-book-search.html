@@ -1,0 +1,189 @@
+<div class="row col-sm-offset-3 col-sm-6">
+    <div class="page-header">
+        <h1>Search e-books</h1>
+    </div>
+
+    <div class="panel-group" id="searchTypeAccordion">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h2 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#searchTypeAccordion" href="#searchByTitle">
+                        By Title
+                    </a>
+                </h2>
+            </div>
+
+            <div id="searchByTitle" class="panel-collapse collapse in">
+                <div class="panel-body">
+
+                </div>
+            </div>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h2 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#searchTypeAccordion" href="#searchByAuthor">
+                        By Author
+                    </a>
+                </h2>
+            </div>
+
+            <div id="searchByAuthor" class="panel-collapse collapse">
+                <div class="panel-body">
+                    Hej ti
+                </div>
+            </div>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h2 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#searchTypeAccordion" href="#searchByKeywords">
+                        By Keywords
+                    </a>
+                </h2>
+            </div>
+
+            <div id="searchByKeywords" class="panel-collapse collapse">
+                <div class="panel-body">
+                    Hej ti ti
+                </div>
+            </div>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h2 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#searchTypeAccordion" href="#searchByContent">
+                        By Content
+                    </a>
+                </h2>
+            </div>
+
+            <div id="searchByContent" class="panel-collapse collapse">
+                <div class="panel-body">
+                    Hej ti ti ti
+                </div>
+            </div>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h2 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#searchTypeAccordion" href="#searchByLanguage">
+                        By Language
+                    </a>
+                </h2>
+            </div>
+
+            <div id="searchByLanguage" class="panel-collapse collapse">
+                <div class="panel-body">
+                    Hej ti ti ti ti
+                </div>
+            </div>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h2 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#searchTypeAccordion" href="#searchCombined">
+                        Combined
+                    </a>
+                </h2>
+            </div>
+
+            <div id="searchCombined" class="panel-collapse collapse">
+                <div class="panel-body">
+                    <form name="eBookSearchCombinedForm">
+                        <div class="form-group">
+                            <label for="titleCombined">Title</label>
+                            <input name="title" id="titleCombined" ng-model="eBookSearchViewModel.searchParameters.title"
+                                type="text" class="form-control"/>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="authorCombined">Author</label>
+                            <input name="author" id="authorCombined" ng-model="eBookSearchViewModel.searchParameters.author"
+                                type="text" class="form-control"/>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="keywordsCombined">Keyword</label>
+                            <input name="keywords" id="keywordsCombined" ng-model="eBookSearchViewModel.searchParameters.keywords"
+                                type="text" class="form-control"/>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="contentCombined">Content</label>
+                            <input name="content" id="contentCombined" ng-model="eBookSearchViewModel.searchParameters.content"
+                                type="text" class="form-control"/>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="languageCombined">Language</label>
+                            <input name="language" id="languageCombined" ng-model="eBookSearchViewModel.searchParameters.language"
+                                type="text" class="form-control"/>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="operatorCombined">Operator</label>
+                            <select name="operator" id="operatorCombined" ng-model="eBookSearchViewModel.searchParameters.operator"
+                                class="form-control">
+                                <option value="OR">OR</option>
+                                <option value="AND">AND</option>
+                            </select>
+                        </div>
+
+                        <button type="submit" class="btn btn-success btn-block">
+                            <span class="glyphicon glyphicon-search"></span> Search
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div ng-show="eBookSearchViewModel.searchResults">
+        <h2>Search results</h2>
+
+        <table class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Title</th>
+                    <th>Author</th>
+                    <th>Highlight</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr ng-repeat="eBook in eBookSearchViewModel.searchResults">
+                    <td>{{eBook.id}}</td>
+                    <td>{{eBook.title}}</td>
+                    <td>{{eBook.author}}</td>
+                    <td>{{eBook.highlight}}</td>
+                    <td>
+                        <div class="btn-group-vertical">
+                            <button type="button" class="btn btn-primary"
+                                ng-click="eBookSearchViewModel.showEBookDetails(eBook.id)">
+                                Show details
+                            </button>
+                            <button ng-if="eBookSearchViewModel.loggedIn && (
+                                (eBookSearchViewModel.loggedInUserDetails.type == 'ROLE_ADMIN') || (
+                                eBookSearchViewModel.loggedInUserDetails.type == 'ROLE_SUBSCRIBER' && (
+                                    eBookSearchViewModel.loggedInUserDetails.category == null ||
+                                    eBookSearchViewModel.loggedInUserDetails.category.id == eBook.category.id
+                                )))"
+                                type="button" class="btn btn-success"
+                                ng-click="eBookSearchViewModel.downloadEBookFile(eBook.id)">
+                                Download
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

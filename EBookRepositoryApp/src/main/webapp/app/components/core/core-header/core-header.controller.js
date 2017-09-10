@@ -5,8 +5,8 @@
         .module("app.core")
         .controller("CoreHeaderController", CoreHeaderController);
 
-    CoreHeaderController.$inject = ["userService", "$state"];
-    function CoreHeaderController(userService, $state) {
+    CoreHeaderController.$inject = ["userService", "$state", "$window"];
+    function CoreHeaderController(userService, $state, $window) {
         var viewModel = this;
 
         viewModel.loggedIn = userService.isLoggedIn();
@@ -27,7 +27,8 @@
 
         function logout() {
             userService.logout();
-            $state.go("user-login");
+            $state.go("e-book-search");
+            $window.location.reload();
         }
     }
 } (angular));

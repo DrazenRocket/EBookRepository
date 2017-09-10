@@ -39,7 +39,7 @@ public class EBookController {
 
     @GetMapping("")
     public ResponseEntity<List<EBook>> findAllEBooks() {
-        ResponseEntity responseEntity = null;
+        ResponseEntity<List<EBook>> responseEntity = null;
         List<EBook> eBooks = eBookService.findAllEBooks();
 
         eBooks.forEach((eBook) -> eBook.getCataloguer().setPassword(null));

@@ -19,11 +19,7 @@
                 userService.login(viewModel.username,
                     viewModel.password,
                     function (response) {
-                        // TODO: Redirect to appropriate state (for example: to default which shows categories)
-                        var userId = userService.getUserIdFromLocalStorage();
-                        $state.go("user-profile", {
-                            userId: userId
-                        });
+                        $state.go("e-book-search");
                     },
                     function () {
                         viewModel.unsuccessfulLogin = true;

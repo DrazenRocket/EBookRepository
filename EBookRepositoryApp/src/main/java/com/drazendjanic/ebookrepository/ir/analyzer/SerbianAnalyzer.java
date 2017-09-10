@@ -36,7 +36,7 @@ public class SerbianAnalyzer extends Analyzer {
             "li", "da"};
 
     public SerbianAnalyzer(){
-        this.version = Version.LUCENE_4_9;
+        version = Version.LUCENE_4_9;
     }
 
     public SerbianAnalyzer(Version version) {

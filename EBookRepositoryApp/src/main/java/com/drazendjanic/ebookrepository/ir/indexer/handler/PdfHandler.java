@@ -38,7 +38,7 @@ public class PdfHandler extends DocumentHandler {
             File file = new File(repositoryPath + eBook.getFilename());
             String textContent = getTextContentFromPdf(file);
 
-            document.add(new TextField("textContent", textContent, Field.Store.NO));
+            document.add(new TextField("textContent", textContent, Field.Store.YES));
         }
         catch (IOException e) {
             throw new IncompleteIndexDocumentException();
