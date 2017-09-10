@@ -140,4 +140,36 @@
                 }
             });
     };
+
+    EBookService.prototype.searchEBooksBySingleField = function (fieldName, fieldValue, queryType) {
+        var request = {
+            method: "GET",
+            url: "/api/ebooks/searchBySingleField",
+            params: {
+                fieldName: fieldName,
+                fieldValue: fieldValue,
+                queryType: queryType
+            }
+        };
+
+        return this.$http(request);
+    };
+    
+    EBookService.prototype.searchEBooksByMultiFields = function (title, author, keywords, content, language, queryOperator, queryType) {
+        var request = {
+            method: "GET",
+            url: "/api/ebooks/searchByMultiFields",
+            params: {
+                title: title,
+                author: author,
+                keywords: keywords,
+                content: content,
+                language: language,
+                queryOperator: queryOperator,
+                queryType: queryType
+            }
+        };
+        
+        return this.$http(request);
+    };
 } (angular));

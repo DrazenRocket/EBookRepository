@@ -12,15 +12,21 @@
         viewModel.loggedIn = userService.isLoggedIn();
         viewModel.loggedInUserId = -1;
         viewModel.loggedInUserDetails = {};
-        viewModel.searchParameters = {};
-        viewModel.searchParameters.title = "";
-        viewModel.searchParameters.author = "";
-        viewModel.searchParameters.keywords = "";
-        viewModel.searchParameters.content = "";
-        viewModel.searchParameters.language = "";
-        viewModel.searchParameters.operator = "OR";
+        viewModel.singleFieldSearchParameters = {};
+        viewModel.singleFieldSearchParameters.fieldName = "title";
+        viewModel.singleFieldSearchParameters.fieldValue = "";
+        viewModel.singleFieldSearchParameters.queryType = "STANDARD";
+        viewModel.multiFieldSearchParameters = {};
+        viewModel.multiFieldSearchParameters.title = "";
+        viewModel.multiFieldSearchParameters.author = "";
+        viewModel.multiFieldSearchParameters.keywords = "";
+        viewModel.multiFieldSearchParameters.content = "";
+        viewModel.multiFieldSearchParameters.language = "";
+        viewModel.multiFieldSearchParameters.queryOperator = "OR";
+        viewModel.multiFieldSearchParameters.queryType = "STANDARD";
         viewModel.searchResults = null;
-        viewModel.searchEBooks = searchEBooks;
+        viewModel.searchEBooksBySingleField = searchEBooksBySingleField;
+        viewModel.searchEBooksByMultiFields = searchEBooksByMultiFields;
         viewModel.showEBookDetails = showEBookDetails;
         viewModel.downloadEBookFile = downloadEBookFile;
 
@@ -35,9 +41,51 @@
                 });
         }
 
-        function searchEBooks(isValid) {
+        function searchEBooksBySingleField(isValid) {
             if (isValid) {
+                var fieldName = viewModel.singleFieldSearchParameters.fieldName;
+                var fieldValue = viewModel.singleFieldSearchParameters.fieldValue;
+                var queryType = viewModel.singleFieldSearchParameters.queryType;
+
                 viewModel.searchResults = null;
+
+                eBookService
+                    .searchEBooksBySingleField(fieldName, fieldValue, queryType)
+                    .then(function (response) {
+                        if (response.status == 200) {
+                            viewModel.searchResults = response.data;
+                        }
+                        else {
+                            viewModel.searchResults = [];
+                        }
+                    }, function (response) {
+                        viewModel.searchResults = [];
+                    });
+            }
+        }
+
+        function searchEBooksByMultiFields(isValid) {
+            if (isValid) {
+                var title = viewModel.multiFieldSearchParameters.title;
+                var author = viewModel.multiFieldSearchParameters.author;
+                var keywords = viewModel.multiFieldSearchParameters.keywords;
+                var content = viewModel.multiFieldSearchParameters.content;
+                var language = viewModel.multiFieldSearchParameters.language;
+                var queryOperator = viewModel.multiFieldSearchParameters.queryOperator;
+                var queryType = viewModel.multiFieldSearchParameters.queryType;
+
+                eBookService
+                    .searchEBooksByMultiFields(title, author, keywords, content, language, queryOperator, queryType)
+                    .then(function (response) {
+                        if (response.status == 200) {
+                            viewModel.searchResults = response.data;
+                        }
+                        else {
+                            viewModel.searchResults = [];
+                        }
+                    }, function (response) {
+                        viewModel.searchResults = [];
+                    })
             }
         }
 

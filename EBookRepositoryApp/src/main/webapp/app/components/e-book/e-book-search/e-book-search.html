@@ -7,15 +7,51 @@
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h2 class="panel-title">
-                    <a data-toggle="collapse" data-parent="#searchTypeAccordion" href="#searchByTitle">
-                        By Title
+                    <a data-toggle="collapse" data-parent="#searchTypeAccordion" href="#singleFieldSearch">
+                        Single Field Search
                     </a>
                 </h2>
             </div>
 
-            <div id="searchByTitle" class="panel-collapse collapse in">
+            <div id="singleFieldSearch" class="panel-collapse collapse in">
                 <div class="panel-body">
+                    <form name="eBookSearchSingleFieldForm"
+                        ng-submit="eBookSearchViewModel.searchEBooksBySingleField(eBookSearchSingleFieldForm.$valid)">
+                        <div class="form-group">
+                            <label for="fieldNameSFS">Field name</label>
+                            <select name="fieldName" id="fieldNameSFS"
+                                ng-model="eBookSearchViewModel.singleFieldSearchParameters.fieldName"
+                                class="form-control">
+                                <option value="title">Title</option>
+                                <option value="author">Author</option>
+                                <option value="keywords">Keywords</option>
+                                <option value="textContent">Content</option>
+                                <option value="language">Language</option>
+                            </select>
+                        </div>
 
+                        <div class="form-group">
+                            <label for="fieldValueSFS">Field value</label>
+                            <input name="fieldValue" id="fieldValueSFS"
+                                ng-model="eBookSearchViewModel.singleFieldSearchParameters.fieldValue"
+                                type="text" class="form-control"/>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="queryTypeSFS">Query type</label>
+                            <select name="queryType" id="queryTypeSFS"
+                                ng-model="eBookSearchViewModel.singleFieldSearchParameters.queryType"
+                                class="form-control">
+                                <option value="STANDARD">Standard</option>
+                                <option value="PHRASE">Phrase</option>
+                                <option value="FUZZY">Fuzzy</option>
+                            </select>
+                        </div>
+
+                        <button type="submit" class="btn btn-success btn-block">
+                            <span class="glyphicon glyphicon-search"></span> Search
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>
@@ -23,115 +59,69 @@
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h2 class="panel-title">
-                    <a data-toggle="collapse" data-parent="#searchTypeAccordion" href="#searchByAuthor">
-                        By Author
+                    <a data-toggle="collapse" data-parent="#searchTypeAccordion" href="#multiFieldSearch">
+                        Multi Field Search
                     </a>
                 </h2>
             </div>
 
-            <div id="searchByAuthor" class="panel-collapse collapse">
+            <div id="multiFieldSearch" class="panel-collapse collapse">
                 <div class="panel-body">
-                    Hej ti
-                </div>
-            </div>
-        </div>
-
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h2 class="panel-title">
-                    <a data-toggle="collapse" data-parent="#searchTypeAccordion" href="#searchByKeywords">
-                        By Keywords
-                    </a>
-                </h2>
-            </div>
-
-            <div id="searchByKeywords" class="panel-collapse collapse">
-                <div class="panel-body">
-                    Hej ti ti
-                </div>
-            </div>
-        </div>
-
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h2 class="panel-title">
-                    <a data-toggle="collapse" data-parent="#searchTypeAccordion" href="#searchByContent">
-                        By Content
-                    </a>
-                </h2>
-            </div>
-
-            <div id="searchByContent" class="panel-collapse collapse">
-                <div class="panel-body">
-                    Hej ti ti ti
-                </div>
-            </div>
-        </div>
-
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h2 class="panel-title">
-                    <a data-toggle="collapse" data-parent="#searchTypeAccordion" href="#searchByLanguage">
-                        By Language
-                    </a>
-                </h2>
-            </div>
-
-            <div id="searchByLanguage" class="panel-collapse collapse">
-                <div class="panel-body">
-                    Hej ti ti ti ti
-                </div>
-            </div>
-        </div>
-
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h2 class="panel-title">
-                    <a data-toggle="collapse" data-parent="#searchTypeAccordion" href="#searchCombined">
-                        Combined
-                    </a>
-                </h2>
-            </div>
-
-            <div id="searchCombined" class="panel-collapse collapse">
-                <div class="panel-body">
-                    <form name="eBookSearchCombinedForm">
+                    <form name="eBookSearchMultiFieldForm"
+                        ng-submit="eBookSearchViewModel.searchEBooksByMultiFields(eBookSearchMultiFieldForm.$valid)">
                         <div class="form-group">
-                            <label for="titleCombined">Title</label>
-                            <input name="title" id="titleCombined" ng-model="eBookSearchViewModel.searchParameters.title"
+                            <label for="titleMFS">Title</label>
+                            <input name="title" id="titleMFS"
+                                ng-model="eBookSearchViewModel.multiFieldSearchParameters.title"
                                 type="text" class="form-control"/>
                         </div>
 
                         <div class="form-group">
-                            <label for="authorCombined">Author</label>
-                            <input name="author" id="authorCombined" ng-model="eBookSearchViewModel.searchParameters.author"
+                            <label for="authorMFS">Author</label>
+                            <input name="author" id="authorMFS"
+                                ng-model="eBookSearchViewModel.multiFieldSearchParameters.author"
                                 type="text" class="form-control"/>
                         </div>
 
                         <div class="form-group">
-                            <label for="keywordsCombined">Keyword</label>
-                            <input name="keywords" id="keywordsCombined" ng-model="eBookSearchViewModel.searchParameters.keywords"
+                            <label for="keywordsMFS">Keyword</label>
+                            <input name="keywords" id="keywordsMFS"
+                                ng-model="eBookSearchViewModel.multiFieldSearchParameters.keywords"
                                 type="text" class="form-control"/>
                         </div>
 
                         <div class="form-group">
-                            <label for="contentCombined">Content</label>
-                            <input name="content" id="contentCombined" ng-model="eBookSearchViewModel.searchParameters.content"
+                            <label for="contentMFS">Content</label>
+                            <input name="content" id="contentMFS"
+                                ng-model="eBookSearchViewModel.multiFieldSearchParameters.content"
                                 type="text" class="form-control"/>
                         </div>
 
                         <div class="form-group">
-                            <label for="languageCombined">Language</label>
-                            <input name="language" id="languageCombined" ng-model="eBookSearchViewModel.searchParameters.language"
+                            <label for="languageMFS">Language</label>
+                            <input name="language" id="languageMFS"
+                                ng-model="eBookSearchViewModel.multiFieldSearchParameters.language"
                                 type="text" class="form-control"/>
                         </div>
 
                         <div class="form-group">
-                            <label for="operatorCombined">Operator</label>
-                            <select name="operator" id="operatorCombined" ng-model="eBookSearchViewModel.searchParameters.operator"
+                            <label for="queryOperatorMFS">Query operator</label>
+                            <select name="queryOperator" id="queryOperatorMFS"
+                                ng-model="eBookSearchViewModel.multiFieldSearchParameters.queryOperator"
                                 class="form-control">
                                 <option value="OR">OR</option>
                                 <option value="AND">AND</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="queryTypeMFS">Query type</label>
+                            <select name="queryType" id="queryTypeMFS"
+                                ng-model="eBookSearchViewModel.multiFieldSearchParameters.queryType"
+                                class="form-control">
+                                <option value="STANDARD">Standard</option>
+                                <option value="PHRASE">Phrase</option>
+                                <option value="FUZZY">Fuzzy</option>
                             </select>
                         </div>
 
@@ -163,7 +153,7 @@
                     <td>{{eBook.id}}</td>
                     <td>{{eBook.title}}</td>
                     <td>{{eBook.author}}</td>
-                    <td>{{eBook.highlight}}</td>
+                    <td>{{eBook.highlights}}</td>
                     <td>
                         <div class="btn-group-vertical">
                             <button type="button" class="btn btn-primary"
