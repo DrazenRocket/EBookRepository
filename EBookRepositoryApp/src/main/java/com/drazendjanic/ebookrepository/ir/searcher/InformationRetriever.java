@@ -95,7 +95,7 @@ public class InformationRetriever {
                 }
             }
 
-            hitEBook.setKeywords(highlightsStringBuilder.toString());
+            hitEBook.setHighlights(highlightsStringBuilder.toString());
             hitEBooks.add(hitEBook);
         }
 

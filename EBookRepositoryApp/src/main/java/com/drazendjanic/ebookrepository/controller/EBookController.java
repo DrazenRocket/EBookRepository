@@ -1,12 +1,11 @@
 package com.drazendjanic.ebookrepository.controller;
 
 import com.drazendjanic.ebookrepository.assembler.EBookAssembler;
-import com.drazendjanic.ebookrepository.dto.BaseMetadataDto;
-import com.drazendjanic.ebookrepository.dto.EditedEBookDto;
-import com.drazendjanic.ebookrepository.dto.NewEBookDto;
+import com.drazendjanic.ebookrepository.dto.*;
 import com.drazendjanic.ebookrepository.entity.EBook;
 import com.drazendjanic.ebookrepository.entity.User;
 import com.drazendjanic.ebookrepository.exception.NotFoundException;
+import com.drazendjanic.ebookrepository.ir.searcher.model.HitEBook;
 import com.drazendjanic.ebookrepository.service.IEBookService;
 import com.drazendjanic.ebookrepository.service.IUserService;
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -179,6 +178,26 @@ public class EBookController {
         else {
             responseEntity = new ResponseEntity<Resource>(HttpStatus.NOT_FOUND);
         }
+
+        return responseEntity;
+    }
+
+    @GetMapping("/searchBySingleField")
+    public ResponseEntity<List<HitEBookDto>> searchEBooksBySingleField(@Validated SingleFieldSearchDto singleFieldSearchDto) {
+        ResponseEntity<List<HitEBookDto>> responseEntity = null;
+        List<HitEBookDto> hitEBooks = eBookService.searchEBooks(singleFieldSearchDto);
+
+        responseEntity = new ResponseEntity<List<HitEBookDto>>(hitEBooks, HttpStatus.OK);
+
+        return responseEntity;
+    }
+
+    @GetMapping("/searchByMultiFields")
+    public ResponseEntity<List<HitEBookDto>> searchEBooksByMultiFields(@Validated MultiFieldSearchDto multiFieldSearchDto) {
+        ResponseEntity<List<HitEBookDto>> responseEntity = null;
+        List<HitEBook> hitEBooks = eBookService.searchEBooks(multiFieldSearchDto);
+
+        // responseEntity = new ResponseEntity<List<HitEBookDto>>(hitEBooks, HttpStatus.OK);
 
         return responseEntity;
     }

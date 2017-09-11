@@ -164,7 +164,7 @@
                                 (eBookSearchViewModel.loggedInUserDetails.type == 'ROLE_ADMIN') || (
                                 eBookSearchViewModel.loggedInUserDetails.type == 'ROLE_SUBSCRIBER' && (
                                     eBookSearchViewModel.loggedInUserDetails.category == null ||
-                                    eBookSearchViewModel.loggedInUserDetails.category.id == eBook.category.id
+                                    eBookSearchViewModel.loggedInUserDetails.category.id == eBook.categoryId
                                 )))"
                                 type="button" class="btn btn-success"
                                 ng-click="eBookSearchViewModel.downloadEBookFile(eBook.id)">
