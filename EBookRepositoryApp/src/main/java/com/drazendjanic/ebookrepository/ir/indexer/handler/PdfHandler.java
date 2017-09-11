@@ -26,12 +26,12 @@ public class PdfHandler extends DocumentHandler {
         document.add(new TextField("language", language.getName(), Field.Store.YES));
         document.add(new TextField("title", eBook.getTitle(), Field.Store.YES));
 
-        if (eBook.getAuthor() != null && !eBook.getAuthor().trim().equals("")) {
+        if (eBook.getAuthor() != null && !eBook.getAuthor().trim().isEmpty()) {
             document.add(new TextField("author", eBook.getAuthor(), Field.Store.YES));
         }
 
-        if (eBook.getKeywords() != null && !eBook.getKeywords().trim().equals("")) {
-            document.add(new TextField("keywords", eBook.getAuthor(), Field.Store.YES));
+        if (eBook.getKeywords() != null && !eBook.getKeywords().trim().isEmpty()) {
+            document.add(new TextField("keywords", eBook.getKeywords(), Field.Store.YES));
         }
 
         try {

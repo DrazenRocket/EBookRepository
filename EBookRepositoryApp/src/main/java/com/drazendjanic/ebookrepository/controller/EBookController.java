@@ -185,9 +185,9 @@ public class EBookController {
     @GetMapping("/searchBySingleField")
     public ResponseEntity<List<HitEBookDto>> searchEBooksBySingleField(@Validated SingleFieldSearchDto singleFieldSearchDto) {
         ResponseEntity<List<HitEBookDto>> responseEntity = null;
-        List<HitEBookDto> hitEBooks = eBookService.searchEBooks(singleFieldSearchDto);
+        List<HitEBookDto> hitEBookDtos = eBookService.searchEBooks(singleFieldSearchDto);
 
-        responseEntity = new ResponseEntity<List<HitEBookDto>>(hitEBooks, HttpStatus.OK);
+        responseEntity = new ResponseEntity<List<HitEBookDto>>(hitEBookDtos, HttpStatus.OK);
 
         return responseEntity;
     }
@@ -195,9 +195,9 @@ public class EBookController {
     @GetMapping("/searchByMultiFields")
     public ResponseEntity<List<HitEBookDto>> searchEBooksByMultiFields(@Validated MultiFieldSearchDto multiFieldSearchDto) {
         ResponseEntity<List<HitEBookDto>> responseEntity = null;
-        List<HitEBook> hitEBooks = eBookService.searchEBooks(multiFieldSearchDto);
+        List<HitEBookDto> hitEBookDtos = eBookService.searchEBooks(multiFieldSearchDto);
 
-        // responseEntity = new ResponseEntity<List<HitEBookDto>>(hitEBooks, HttpStatus.OK);
+        responseEntity = new ResponseEntity<List<HitEBookDto>>(hitEBookDtos, HttpStatus.OK);
 
         return responseEntity;
     }

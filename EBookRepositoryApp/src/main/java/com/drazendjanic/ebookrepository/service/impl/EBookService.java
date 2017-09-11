@@ -14,6 +14,7 @@ import com.drazendjanic.ebookrepository.ir.indexer.handler.PdfHandler;
 import com.drazendjanic.ebookrepository.ir.searcher.InformationRetriever;
 import com.drazendjanic.ebookrepository.ir.searcher.model.HitEBook;
 import com.drazendjanic.ebookrepository.ir.searcher.query.QueryBuilder;
+import com.drazendjanic.ebookrepository.ir.searcher.query.QueryOperator;
 import com.drazendjanic.ebookrepository.ir.searcher.query.QueryType;
 import com.drazendjanic.ebookrepository.repository.IEBookRepository;
 import com.drazendjanic.ebookrepository.service.IEBookService;
@@ -169,7 +170,7 @@ public class EBookService implements IEBookService {
     @Override
     @Transactional
     public List<HitEBookDto> searchEBooks(SingleFieldSearchDto singleFieldSearchDto) {
-        List<HitEBookDto> hitEBookDtos = new ArrayList<HitEBookDto>();
+        List<HitEBookDto> hitEBookDtos = null;
         List<HitEBook> hitEBooks = null;
         String fieldName = singleFieldSearchDto.getFieldName().trim();
         String fieldValue = singleFieldSearchDto.getFieldValue().trim();
@@ -187,11 +188,49 @@ public class EBookService implements IEBookService {
             hitEBooks = new ArrayList<HitEBook>();
         }
 
-        for (HitEBook hitEBook : hitEBooks) {
-            EBook eBook = findEBookById(hitEBook.getId());
-            HitEBookDto hitEBookDto = HitEBookAssembler.toHitEBookDto(hitEBook, eBook);
+        hitEBookDtos = transformHitEBookToHitEBookDto(hitEBooks);
 
-            hitEBookDtos.add(hitEBookDto);
+        return hitEBookDtos;
+    }
+
+    @Override
+    @Transactional
+    public List<HitEBookDto> searchEBooks(MultiFieldSearchDto multiFieldSearchDto) {
+        List<HitEBookDto> hitEBookDtos = null;
+        List<HitEBook> hitEBooks = null;
+        InformationRetriever informationRetriever = new InformationRetriever(rawDataRepositoryPath, indexedDataRepositoryPath);
+        List<String> requiredHighlights = new ArrayList<String>();
+        QueryType queryType = QueryType.valueOf(multiFieldSearchDto.getQueryType());
+        QueryOperator queryOperator = QueryOperator.valueOf(multiFieldSearchDto.getQueryOperator());
+        BooleanClause.Occur occur = queryOperator.equals(QueryOperator.AND) ? BooleanClause.Occur.MUST : BooleanClause.Occur.SHOULD;
+        BooleanQuery booleanQuery = new BooleanQuery();
+
+        try {
+            if (multiFieldSearchDto.getTitle() != null && !multiFieldSearchDto.getTitle().trim().isEmpty()) {
+                requiredHighlights.add("title");
+                booleanQuery.add(QueryBuilder.buildQuery(queryType, "title", multiFieldSearchDto.getTitle().trim()), occur);
+            }
+            if (multiFieldSearchDto.getAuthor() != null && !multiFieldSearchDto.getAuthor().trim().isEmpty()) {
+                requiredHighlights.add("author");
+                booleanQuery.add(QueryBuilder.buildQuery(queryType, "author", multiFieldSearchDto.getAuthor().trim()), occur);
+            }
+            if (multiFieldSearchDto.getKeywords() != null && !multiFieldSearchDto.getKeywords().trim().isEmpty()) {
+                requiredHighlights.add("keywords");
+                booleanQuery.add(QueryBuilder.buildQuery(queryType, "keywords", multiFieldSearchDto.getKeywords().trim()), occur);
+            }
+            if (multiFieldSearchDto.getContent() != null && !multiFieldSearchDto.getContent().trim().isEmpty()) {
+                requiredHighlights.add("textContent");
+                booleanQuery.add(QueryBuilder.buildQuery(queryType, "textContent", multiFieldSearchDto.getContent().trim()), occur);
+            }
+            if (multiFieldSearchDto.getLanguage() != null && !multiFieldSearchDto.getLanguage().trim().isEmpty()) {
+                requiredHighlights.add("language");
+                booleanQuery.add(QueryBuilder.buildQuery(queryType, "language", multiFieldSearchDto.getLanguage().trim()), occur);
+            }
+
+            hitEBooks = informationRetriever.getEBooks(booleanQuery, requiredHighlights);
+            hitEBookDtos = transformHitEBookToHitEBookDto(hitEBooks);
+        }catch (ParseException e) {
+            hitEBookDtos = new ArrayList<HitEBookDto>();
         }
 
         return hitEBookDtos;
@@ -199,27 +238,19 @@ public class EBookService implements IEBookService {
 
     @Override
     @Transactional
-    public List<HitEBook> searchEBooks(MultiFieldSearchDto multiFieldSearchDto) {
-        List<HitEBook> hitEBooks = null;
-        InformationRetriever informationRetriever = new InformationRetriever(rawDataRepositoryPath, indexedDataRepositoryPath);
-        BooleanQuery booleanQuery = new BooleanQuery();
-        List<BooleanClause> booleanClauses = getBooleanClauses(multiFieldSearchDto);
-        List<String> requiredHighlights = new ArrayList<>();
+    public List<HitEBookDto> transformHitEBookToHitEBookDto(List<HitEBook> hitEBooks) {
+        List<HitEBookDto> hitEBookDtos = new ArrayList<HitEBookDto>();
 
-        for(BooleanClause booleanClause : booleanClauses) {
-            booleanQuery.add(booleanClause);
+        if (hitEBooks != null) {
+            for (HitEBook hitEBook : hitEBooks) {
+                EBook eBook = findEBookById(hitEBook.getId());
+                HitEBookDto hitEBookDto = HitEBookAssembler.toHitEBookDto(hitEBook, eBook);
+
+                hitEBookDtos.add(hitEBookDto);
+            }
         }
 
-        hitEBooks = informationRetriever.getEBooks(booleanQuery, requiredHighlights);
-
-        return hitEBooks;
-    }
-
-    private List<BooleanClause> getBooleanClauses(MultiFieldSearchDto multiFieldSearchDto) {
-        List<BooleanClause> booleanClauses = new ArrayList<BooleanClause>();
-        // TODO Prepraviti metodu da prihvata niz stringova koji predstavljaju polja, tip query-a i da li je u pitanju and ili or
-        // TODO Napraviti metodu za dobijanje niza stringova
-        return booleanClauses;
+        return hitEBookDtos;
     }
 
 }

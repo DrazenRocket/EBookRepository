@@ -1,5 +1,8 @@
 package com.drazendjanic.ebookrepository.dto;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+
 public class MultiFieldSearchDto {
 
     private String title;
@@ -12,8 +15,12 @@ public class MultiFieldSearchDto {
 
     private String language;
 
+    @NotNull(message = "error.queryType.NotNull")
+    @Pattern(regexp = "^(STANDARD|PHRASE|FUZZY)$", message = "error.queryType.Pattern")
     private String queryType;
 
+    @NotNull(message = "error.queryType.NotNull")
+    @Pattern(regexp = "^(OR|AND)$", message = "error.queryOperator.Pattern")
     private String queryOperator;
 
     public MultiFieldSearchDto() {

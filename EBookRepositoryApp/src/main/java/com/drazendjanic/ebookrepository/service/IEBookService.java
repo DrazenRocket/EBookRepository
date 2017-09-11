@@ -7,7 +7,6 @@ import com.drazendjanic.ebookrepository.entity.EBook;
 import com.drazendjanic.ebookrepository.exception.NotFoundException;
 import com.drazendjanic.ebookrepository.ir.searcher.model.HitEBook;
 import org.springframework.core.io.Resource;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
@@ -33,6 +32,7 @@ public interface IEBookService {
 
     List<HitEBookDto> searchEBooks(SingleFieldSearchDto singleFieldSearchDto);
 
-    List<HitEBook> searchEBooks(MultiFieldSearchDto multiFieldSearchDto);
+    List<HitEBookDto> searchEBooks(MultiFieldSearchDto multiFieldSearchDto);
 
+    List<HitEBookDto> transformHitEBookToHitEBookDto(List<HitEBook> hitEBooks);
 }
