@@ -228,7 +228,7 @@ public class EBookService implements IEBookService {
             }
 
             hitEBooks = informationRetriever.getEBooks(booleanQuery, requiredHighlights);
-            hitEBookDtos = transformHitEBookToHitEBookDto(hitEBooks);
+            hitEBookDtos = transformHitEBookToHitEBookDto(hitEBooks);   // TODO Good idea is to index info about category of appropriate e-book, It is good for performances when we want to consider permission for download
         }catch (ParseException e) {
             hitEBookDtos = new ArrayList<HitEBookDto>();
         }

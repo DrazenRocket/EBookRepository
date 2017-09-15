@@ -34,6 +34,8 @@ public class PdfHandler extends DocumentHandler {
             document.add(new TextField("keywords", eBook.getKeywords(), Field.Store.YES));
         }
 
+        // TODO Good idea is to index info about category of appropriate e-book, It is good for performances when we want to consider permission for download
+
         try {
             File file = new File(repositoryPath + eBook.getFilename());
             String textContent = getTextContentFromPdf(file);

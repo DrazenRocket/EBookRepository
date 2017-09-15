@@ -74,6 +74,8 @@
                 var queryOperator = viewModel.multiFieldSearchParameters.queryOperator;
                 var queryType = viewModel.multiFieldSearchParameters.queryType;
 
+                viewModel.searchResults = null;
+
                 eBookService
                     .searchEBooksByMultiFields(title, author, keywords, content, language, queryOperator, queryType)
                     .then(function (response) {
